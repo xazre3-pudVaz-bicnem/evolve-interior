@@ -1,0 +1,399 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Fonts ---- */
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
+
+  /* ---------------------------------------------------------------
+     Brand green — ロゴの緑から採色
+     ※ コントラスト（白背景）
+       brand-500 #00A651 = 3.2:1 → 図形・罫線・アイコンのみ（文字には使わない）
+       brand-700 #0B6E3A = 6.4:1 → 緑の文字・緑ボタン（白抜き文字）に使う
+     --------------------------------------------------------------- */
+  --color-brand-50: #f0f9f4;
+  --color-brand-100: #d9f0e3;
+  --color-brand-200: #aee2c6;
+  --color-brand-300: #74cd9f;
+  --color-brand-400: #3fb87c;
+  --color-brand-500: #00a651;
+  --color-brand-600: #00833f;
+  --color-brand-700: #0b6e3a;
+  --color-brand-800: #0d5730;
+  --color-brand-900: #0a3f24;
+
+  /* ---- Ink（黒・チャコールグレー：アクセント／本文） ---- */
+  --color-ink-400: #949aa0;
+  --color-ink-500: #6b7278;
+  --color-ink-600: #454b50;
+  --color-ink-700: #2b3033;
+  --color-ink-800: #191c1f;
+  --color-ink-900: #101214;
+
+  /* ---- Mist（薄いグレー：面・区切り） ---- */
+  --color-mist-50: #fafbfb;
+  --color-mist-100: #f4f6f5;
+  --color-mist-200: #e9ecea;
+  --color-mist-300: #d9dedb;
+  --color-mist-400: #c3cac6;
+
+  /* ---- Spacing / container ---- */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+  --container-8xl: 88rem;
+
+  /* ---- Easing ---- */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------- Base ---------------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--color-ink-800);
+  font-feature-settings: "palt";
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/*
+  横スクロール防止。
+
+  スクロール演出は表示前に要素を左右へずらす（translateX）ため、
+  そのままだと画面幅をわずかに超えて横スクロールが発生する。
+  main を clip して封じ込める。
+
+  ※ overflow: hidden ではなく clip を使うこと。
+    hidden はスクロールコンテナを作ってしまい、
+    中の position: sticky（工程セクションの見出しなど）が効かなくなる。
+    clip はスクロールコンテナを作らないので sticky が生きる。
+*/
+main {
+  overflow-x: clip;
+}
+
+::selection {
+  background-color: var(--color-brand-700);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-700);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* iOSでの入力時ズームを防ぐ */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* ---------------- Brand motifs ----------------
+   ロゴの「斜め」を共通モチーフにする */
+
+.eyebrow-bar {
+  display: inline-block;
+  width: 1.25rem;
+  height: 0.5rem;
+  background-color: var(--color-brand-500);
+  transform: skewX(-24deg);
+  flex: none;
+}
+
+.bg-diagonal {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    currentColor 0 1px,
+    transparent 1px 10px
+  );
+}
+
+/* ---------------- Typography helpers ---------------- */
+.text-balance {
+  text-wrap: balance;
+}
+
+.heading-jp {
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.prose-jp p {
+  line-height: 1.95;
+}
+
+/* ==================================================================
+   アニメーション
+
+   方針
+   ・初期状態で隠す指定は、すべて「.js」が付いているときだけ適用する。
+     （JS無効／IntersectionObserverが動かない環境で本文が消えないように）
+   ・prefers-reduced-motion では一切動かさない。
+   ・transform / opacity のみを使い、レイアウトを起こさない。
+   ================================================================== */
+
+/* ---- スクロール表示（Reveal） ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s var(--ease-brand),
+      transform 0.7s var(--ease-brand);
+    will-change: opacity, transform;
+  }
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+
+  /* 変化のバリエーション */
+  .js .reveal[data-anim="fade"] {
+    transform: none;
+  }
+  .js .reveal[data-anim="left"] {
+    transform: translateX(-28px);
+  }
+  .js .reveal[data-anim="right"] {
+    transform: translateX(28px);
+  }
+  .js .reveal[data-anim="zoom"] {
+    transform: scale(1.06);
+  }
+  .js .reveal[data-anim="zoom"].is-visible {
+    transform: scale(1);
+  }
+
+  /* 写真用：幕がめくれて現れる
+     ※ clip-path で要素自体を隠してはいけない。
+       完全にクリップされた要素は IntersectionObserver が「見えていない」と判断し、
+       .is-visible が永久に付かず、写真が出てこなくなる（実際にその不具合を踏んだ）。
+       さらに、クリップされた中の画像は遅延読み込みも走らない。
+       そこで要素自体は隠さず、上に乗せた「幕」（::after）だけを動かす。 */
+  .js .reveal[data-anim="clip"] {
+    position: relative;
+    overflow: hidden;
+    opacity: 1;
+    transform: none;
+  }
+  .js .reveal[data-anim="clip"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-color: var(--color-ink-900);
+    transform: translateY(0);
+    transition: transform 1.1s var(--ease-brand);
+    transition-delay: inherit; /* Revealのdelayをそのまま使う */
+    pointer-events: none;
+  }
+  .js .reveal[data-anim="clip"].is-visible::after {
+    transform: translateY(-101%);
+  }
+}
+
+/* ---- ヒーロー：読み込み後に順に現れる ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-in {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: heroIn 1s var(--ease-brand) forwards;
+  }
+}
+@keyframes heroIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- ヒーロー写真：ゆっくり寄る（Ken Burns） ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero-zoom {
+    animation: heroZoom 24s ease-out forwards;
+  }
+}
+@keyframes heroZoom {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ---- スクロール誘導：縦線の中を光が下りていく ---- */
+.scroll-line {
+  position: relative;
+  width: 1px;
+  height: 56px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.22);
+}
+.scroll-line::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  background-color: #ffffff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-line::after {
+    animation: scrollHint 2.2s ease-in-out infinite;
+  }
+}
+@keyframes scrollHint {
+  0% {
+    transform: translateY(-110%);
+  }
+  100% {
+    transform: translateY(240%);
+  }
+}
+
+/* ---- 写真のホバーで軽く寄る ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .zoom-parent img {
+    transition: transform 0.9s var(--ease-brand);
+  }
+  .zoom-parent:hover img {
+    transform: scale(1.05);
+  }
+}
+
+/* ---- 流れる文字（マーキー） ---- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .marquee-track {
+    animation: marquee 40s linear infinite;
+  }
+}
+
+/* ==================================================================
+   ローディング画面
+
+   ・初回訪問時のみ表示する（2回目以降は body 先頭のインラインスクリプトが
+     <html> に .loaded を付けるため、CSSの時点で非表示になる＝ちらつかない）
+   ・JS無効なら .js が付かないので、そもそも表示されない
+   ================================================================== */
+/*
+   状態は3つ。<html> のクラスで切り替える。
+     （なし）        … 表示しない（JS無効／2回目以降の訪問）
+     .loading        … 表示中（初回訪問だけ、body先頭のインラインスクリプトが付ける）
+     .loading.loaded … 上へ切り上がって退場
+*/
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  background-color: var(--color-ink-900);
+}
+
+.js.loading #loader {
+  display: flex;
+}
+
+/* 読み込み中は背面をスクロールさせない */
+.js.loading:not(.loaded) body {
+  overflow: hidden;
+}
+
+/* 上へ切り上がって消える */
+.js.loading.loaded #loader {
+  pointer-events: none;
+  animation: loaderOut 0.8s var(--ease-brand) forwards;
+}
+@keyframes loaderOut {
+  to {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+}
+
+/* マークが描かれてから塗りが入る */
+#loader .loader-mark {
+  width: 68px;
+  height: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #loader .loader-mark path {
+    animation: markIn 1.1s var(--ease-brand) forwards;
+    transform-origin: center;
+  }
+}
+@keyframes markIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 下の進捗バー */
+#loader .loader-bar {
+  position: relative;
+  overflow: hidden;
+  width: 120px;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+#loader .loader-bar span {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background-color: var(--color-brand-500);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@media (prefers-reduced-motion: no-preference) {
+  #loader .loader-bar span {
+    animation: loaderBar 1.15s var(--ease-brand) forwards;
+  }
+}
+@keyframes loaderBar {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* 動きを抑える設定のときは、ローディング画面自体を出さない */
+@media (prefers-reduced-motion: reduce) {
+  .js.loading #loader {
+    display: none;
+  }
+  .js.loading:not(.loaded) body {
+    overflow: visible;
+  }
+}
