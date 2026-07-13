@@ -55,7 +55,7 @@ export default function DayPage() {
                   <div className="zoom-parent overflow-hidden">
                     <Photo
                       src={d.image}
-                      alt={`${d.title}の様子`}
+                      alt={d.alt}
                       label={d.title}
                       ratio="4 / 3"
                       tone="light"

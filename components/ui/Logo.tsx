@@ -31,8 +31,11 @@ export default function Logo({
       <Image
         src={official}
         alt={SITE_NAME}
-        width={1200}
-        height={565}
+        // 実際の表示は最大でも高さ44px（≒幅94px）。
+        // 元画像は1200px幅だが、width にそのまま渡すと1200px版を読み込んでしまうため、
+        // 表示サイズ（+Retina分）に見合った値を指定する。比率は元画像と同じ 1200:565。
+        width={240}
+        height={113}
         priority={priority}
         unoptimized={official.endsWith('.svg')}
         className={`h-9 w-auto sm:h-10 lg:h-11 ${className}`}

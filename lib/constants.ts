@@ -15,9 +15,10 @@ export const SITE_TAGLINE_EN = 'INTERIOR WORK'
 export const COMPANY = {
   name: SITE_NAME,
   nameEn: 'EVOLVE Inc.',
-  /** 代表者 */
+  /** 代表者。役職は「代表者」としか提供されていないため、
+   *  「代表取締役」などと具体化しない（登記上の役職は未確認）。 */
   ceo: '元田 健司郎',
-  ceoRole: '代表取締役',
+  ceoRole: '代表者',
   /** 住所（表示用・構造化データ用で完全一致させる） */
   address: '兵庫県尼崎市大庄中通5-27-6',
   addressRegion: '兵庫県',

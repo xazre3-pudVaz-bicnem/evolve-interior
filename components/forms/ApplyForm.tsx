@@ -11,7 +11,13 @@ import {
   Honeypot,
 } from './Fields'
 import MailtoPanel from './MailtoPanel'
-import { validateApply, hasErrors, type ApplyInput, type Errors } from '@/lib/validate'
+import {
+  validateApply,
+  hasErrors,
+  focusFirstError,
+  type ApplyInput,
+  type Errors,
+} from '@/lib/validate'
 import { buildApplyMail, mailtoHref } from '@/lib/formMail'
 import { COMPANY, FORM_MODE } from '@/lib/constants'
 
@@ -77,11 +83,8 @@ export default function ApplyForm() {
     setErrors(found)
 
     if (hasErrors(found)) {
-      requestAnimationFrame(() => {
-        document
-          .querySelector('[aria-invalid="true"]')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      })
+      // 最初のエラー項目へフォーカスを移す（スクロールだけでは不十分）
+      focusFirstError()
       return
     }
 

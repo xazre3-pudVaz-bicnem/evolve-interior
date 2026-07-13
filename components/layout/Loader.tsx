@@ -23,11 +23,32 @@ export default function Loader() {
     // 2回目以降の訪問（.loading が付いていない）は何もしない
     if (!html.classList.contains('loading')) return
 
+    // 背面のスクロールを止める。
+    // ※ CSSではなくJSで行う。CSSでやると、JSが動かなかったときに
+    //   解除されず、ページが永久にスクロールできなくなるため。
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    // ローディング画面が覆っているあいだ、背面へフォーカスが入らないようにする
+    // （見えない要素にTabで到達できてしまうのを防ぐ）
+    const behind = [
+      document.getElementById('main'),
+      document.querySelector('header'),
+      document.querySelector('footer'),
+      document.querySelector('[data-mobile-cta]'),
+    ].filter((el): el is HTMLElement => el !== null)
+
+    for (const el of behind) el.setAttribute('inert', '')
+
     let done = false
+    let removeTimer = 0
 
     const finish = () => {
       if (done) return
       done = true
+
+      document.body.style.overflow = prevOverflow
+      for (const el of behind) el.removeAttribute('inert')
 
       html.classList.add('loaded')
       try {
@@ -37,7 +58,7 @@ export default function Loader() {
       }
 
       // 退場アニメーション（0.8s）の後に、完全に取り除く
-      window.setTimeout(() => {
+      removeTimer = window.setTimeout(() => {
         html.classList.remove('loading', 'loaded')
       }, 900)
     }
@@ -47,6 +68,7 @@ export default function Loader() {
 
     return () => {
       window.clearTimeout(timer)
+      window.clearTimeout(removeTimer)
       // 何らかの理由でアンマウントされても、ページが操作不能にならないようにする
       finish()
     }

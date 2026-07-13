@@ -14,7 +14,11 @@ import PhoneIcon from '@/components/ui/PhoneIcon'
  */
 export default function MobileCTABar() {
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-mist-200 bg-white lg:hidden">
+    // data-mobile-cta: モバイルメニューを開いたときに inert にするための目印
+    <div
+      data-mobile-cta
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-mist-200 bg-white lg:hidden"
+    >
       <div className="grid h-16 grid-cols-[84px_1fr_1fr]">
         <a
           href={`tel:${COMPANY.phoneHref}`}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -22,8 +22,9 @@ type Props = {
  * トップページでは、最上部にいるあいだヘッダーを透過させて
  * ヒーロー写真の上に重ねる。スクロールすると白背景に切り替わる。
  *
- * ※ 透過時は上から黒のグラデーションを敷いているため、
- *   写真の明るさに関わらず白文字の可読性が保たれる。
+ * ※ 透過時の白文字の可読性は、ヘッダー自身のグラデーションだけでは足りない。
+ *   ヒーロー側（components/home/Hero.tsx）にもヘッダー用のスクリムを敷いて、
+ *   2枚重ねでコントラストを確保している。片方だけ外すと文字が写真に埋もれる。
  */
 export default function HeaderShell({ logoLight, logoDark }: Props) {
   const pathname = usePathname()
@@ -31,6 +32,19 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
 
   const [scrolled, setScrolled] = useState(false)
   const solid = !isTop || scrolled
+
+  /**
+   * 事業内容のサブメニュー。
+   *
+   * 以前はCSSだけ（group-hover / group-focus-within）で開閉していたが、
+   * それだと Escape で閉じられず（WCAG 1.4.13）、
+   * サブメニューが開いたことも支援技術に伝わらなかった（aria-expanded なし）。
+   * そのため状態を持たせている。
+   */
+  const [subOpen, setSubOpen] = useState(false)
+  const subRef = useRef<HTMLLIElement>(null)
+
+  const closeSub = () => setSubOpen(false)
 
   useEffect(() => {
     if (!isTop) return
@@ -47,6 +61,27 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
     }
   }, [isTop])
 
+  // ページを移動したらサブメニューを閉じる
+  const [seenPath, setSeenPath] = useState(pathname)
+  if (seenPath !== pathname) {
+    setSeenPath(pathname)
+    setSubOpen(false)
+  }
+
+  // Escapeでサブメニューを閉じ、トリガーへフォーカスを戻す
+  useEffect(() => {
+    if (!subOpen) return
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setSubOpen(false)
+      subRef.current?.querySelector<HTMLElement>('button')?.focus()
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [subOpen])
+
   const navText = solid
     ? 'text-ink-700 hover:text-brand-700'
     : 'text-white/90 hover:text-white'
@@ -56,7 +91,7 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         solid
           ? 'border-b border-mist-200 bg-white/95 backdrop-blur-sm'
-          : 'border-b border-transparent bg-gradient-to-b from-black/65 via-black/25 to-transparent'
+          : 'border-b border-transparent bg-gradient-to-b from-black/50 via-black/40 to-black/10'
       }`}
     >
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -90,54 +125,102 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
               {NAV.filter((n) => n.href !== '/contact').map((item) => {
                 const isServices = item.href === '/services'
 
+                if (!isServices) {
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`inline-flex items-center px-4 py-3 text-[14px] font-medium transition-colors ${navText}`}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  )
+                }
+
                 return (
-                  <li key={item.href} className={isServices ? 'group relative' : ''}>
-                    <Link
-                      href={item.href}
-                      className={`inline-flex items-center gap-1.5 px-4 py-3 text-[14px] font-medium transition-colors ${navText}`}
-                    >
-                      {item.label}
-                      {isServices && (
+                  <li
+                    key={item.href}
+                    ref={subRef}
+                    className="relative"
+                    // マウスのときだけホバーで開く。
+                    // タッチでも onMouseEnter は発火するため、そのままだと
+                    // 「開く→クリックでトグル→閉じる」となり、タップしても何も起きない。
+                    onPointerEnter={(e) => {
+                      if (e.pointerType === 'mouse') setSubOpen(true)
+                    }}
+                    onPointerLeave={(e) => {
+                      if (e.pointerType === 'mouse') closeSub()
+                    }}
+                    // フォーカスがこの項目の外へ出たら閉じる（Tabで抜けたとき）
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node | null)) closeSub()
+                    }}
+                  >
+                    <span className="inline-flex items-center">
+                      <Link
+                        href={item.href}
+                        onFocus={() => setSubOpen(true)}
+                        className={`inline-flex items-center py-3 pl-4 text-[14px] font-medium transition-colors ${navText}`}
+                      >
+                        {item.label}
+                      </Link>
+
+                      {/* サブメニューの開閉。リンクとは別のボタンにして、
+                          aria-expanded で開閉状態を伝える */}
+                      <button
+                        type="button"
+                        onClick={() => setSubOpen((v) => !v)}
+                        aria-expanded={subOpen}
+                        aria-controls="services-submenu"
+                        aria-label={`${item.label}のサブメニューを${subOpen ? '閉じる' : '開く'}`}
+                        className={`py-3 pl-1.5 pr-4 text-[9px] transition-colors ${navText}`}
+                      >
                         <span
                           aria-hidden="true"
-                          className="text-[9px] opacity-60 transition-transform duration-200 group-hover:rotate-180"
+                          className={`inline-block opacity-60 transition-transform duration-200 ${
+                            subOpen ? 'rotate-180' : ''
+                          }`}
                         >
                           ▼
                         </span>
-                      )}
-                    </Link>
+                      </button>
+                    </span>
 
-                    {/* 事業内容のドロップダウン（CSSのみ／キーボード対応） */}
-                    {isServices && (
-                      <div className="invisible absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                        <div className="border border-mist-200 bg-white p-2 shadow-xl shadow-ink-900/10">
-                          <ul className="grid grid-cols-2 gap-px bg-mist-100">
-                            {SERVICES.map((s) => (
-                              <li key={s.slug}>
-                                <Link
-                                  href={`/services/${s.slug}`}
-                                  className="flex h-full flex-col gap-1 bg-white p-3.5 transition-colors hover:bg-brand-50"
-                                >
-                                  <span className="text-[13.5px] font-medium text-ink-900">
-                                    {s.name}
-                                  </span>
-                                  <span className="line-clamp-1 text-[11.5px] text-ink-500">
-                                    {s.short}
-                                  </span>
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                          <Link
-                            href="/services"
-                            className="mt-2 flex items-center justify-center gap-2 bg-mist-50 py-3 text-[13px] font-medium text-ink-900 transition-colors hover:bg-mist-100"
-                          >
-                            事業内容の一覧を見る
-                            <span aria-hidden="true">→</span>
-                          </Link>
-                        </div>
+                    <div
+                      id="services-submenu"
+                      hidden={!subOpen}
+                      className="absolute left-1/2 top-full z-50 w-[560px] -translate-x-1/2 pt-2"
+                    >
+                      <div className="border border-mist-200 bg-white p-2 shadow-xl shadow-ink-900/10">
+                        <ul className="grid grid-cols-2 gap-px bg-mist-100">
+                          {SERVICES.map((s) => (
+                            <li key={s.slug}>
+                              <Link
+                                href={`/services/${s.slug}`}
+                                onClick={closeSub}
+                                className="flex h-full flex-col gap-1 bg-white p-3.5 transition-colors hover:bg-brand-50"
+                              >
+                                <span className="text-[13.5px] font-medium text-ink-900">
+                                  {s.name}
+                                </span>
+                                <span className="line-clamp-1 text-[11.5px] text-ink-500">
+                                  {s.short}
+                                </span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        <Link
+                          href="/services"
+                          onClick={closeSub}
+                          className="mt-2 flex items-center justify-center gap-2 bg-mist-50 py-3 text-[13px] font-medium text-ink-900 transition-colors hover:bg-mist-100"
+                        >
+                          事業内容の一覧を見る
+                          <span aria-hidden="true">→</span>
+                        </Link>
                       </div>
-                    )}
+                    </div>
                   </li>
                 )
               })}
@@ -169,9 +252,10 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
               >
                 {COMPANY.phone}
               </a>
+              {/* 小さい文字なので 4.5:1 が必要。white/70 だと写真の上で 3.9:1 しか出ない */}
               <span
                 className={`block text-[10px] leading-tight ${
-                  solid ? 'text-ink-500' : 'text-white/70'
+                  solid ? 'text-ink-500' : 'text-white/90'
                 }`}
               >
                 受付 {COMPANY.hours}

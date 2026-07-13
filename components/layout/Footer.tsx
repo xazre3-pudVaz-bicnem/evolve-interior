@@ -157,7 +157,7 @@ export default function Footer() {
             </li>
           </ul>
 
-          <p className="text-xs text-ink-400">
+          <p className="text-xs text-ink-500">
             © {year} {SITE_NAME}
           </p>
         </div>

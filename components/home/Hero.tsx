@@ -46,6 +46,19 @@ export default function Hero() {
         aria-hidden="true"
       />
 
+      {/*
+        ヘッダー用のスクリム。
+
+        ヒーロー最上部では、ヘッダーが透過して写真の上に白文字が乗る。
+        hero.jpg は窓が白飛びした明るい写真のため、これがないと
+        ナビや電話番号のコントラストが 2〜3:1 程度しか出ず、読めない。
+        ヘッダーの高さ（64/80px）をしっかり覆う濃さで敷く。
+      */}
+      <div
+        className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink-900/95 via-ink-900/80 to-transparent lg:h-36"
+        aria-hidden="true"
+      />
+
       {/* コピー */}
       <div className="relative mx-auto w-full max-w-7xl px-5 pb-16 pt-28 lg:px-8 lg:pb-24 lg:pt-40">
         <p

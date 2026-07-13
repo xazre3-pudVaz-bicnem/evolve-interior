@@ -126,13 +126,13 @@ export default function RecruitPage() {
       {/* 働く魅力 */}
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="appeal-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionHeading eyebrow="WHY EVOLVE" title="EVOLVEで働く魅力" as="h2" />
+          <SectionHeading id="appeal-heading" eyebrow="WHY EVOLVE" title="EVOLVEで働く魅力" as="h2" />
 
           <ul className="mt-14 grid gap-px border border-mist-200 bg-mist-200 sm:grid-cols-2">
             {RECRUIT_APPEALS.map((a, i) => (
               <Reveal as="li" key={a.title} delay={(i % 2) * 60}>
                 <div className="flex h-full flex-col bg-white p-8 sm:p-10">
-                  <span className="font-display text-3xl font-bold text-mist-300">
+                  <span className="font-display text-3xl font-bold text-ink-400">
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 className="heading-jp mt-5 text-lg font-bold text-ink-900">{a.title}</h3>
@@ -153,6 +153,7 @@ export default function RecruitPage() {
           <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
             <Reveal>
               <SectionHeading
+                id="tasks-heading"
                 eyebrow="WORK"
                 title="仕事内容"
                 lead="建物の内側をつくる仕事です。壁や天井の骨組みを組み、ボードを張り、仕上げていきます。現場や工事の内容によって、担当する作業は変わります。"
@@ -247,6 +248,7 @@ export default function RecruitPage() {
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="ideal-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="ideal-heading"
             eyebrow="WE WANT"
             title="求める人物像"
             lead="特別な資格や経験がなくても構いません。次のような方を歓迎します。"
@@ -275,6 +277,7 @@ export default function RecruitPage() {
       >
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="day-heading"
             eyebrow="A DAY"
             title="一日の流れ"
             lead="基本的に現場へ直行し、作業終了後は現地で解散します。"
@@ -308,6 +311,7 @@ export default function RecruitPage() {
       <section className="py-20 sm:py-24" aria-labelledby="ig-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="ig-heading"
             eyebrow="INSTAGRAM"
             title="現場の雰囲気を見てみる"
             lead="日々の仕事の様子は、Instagramで発信しています。応募前に、どんな現場なのかを見ていただけます。"
@@ -322,6 +326,7 @@ export default function RecruitPage() {
       <section className="bg-mist-50 py-20 sm:py-24" aria-labelledby="faq-heading">
         <div className="mx-auto max-w-4xl px-5 lg:px-8">
           <SectionHeading
+            id="faq-heading"
             eyebrow="FAQ"
             title="採用に関するよくあるご質問"
             as="h2"

@@ -184,7 +184,7 @@ export default async function ServiceDetailPage({
         title={service.name}
         lead={service.lead}
         image={service.image}
-        imageAlt={`${service.name}の施工現場`}
+        imageAlt={service.imageAlt}
       />
 
       {/* 工事内容 */}
@@ -211,7 +211,7 @@ export default async function ServiceDetailPage({
             <div className="lg:pt-4">
               <Photo
                 src={service.image}
-                alt={`${service.name}の施工の様子`}
+                alt={service.imageAlt}
                 label={`${service.name}の現場`}
                 ratio="4 / 5"
                 tone="light"
@@ -282,6 +282,7 @@ export default async function ServiceDetailPage({
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <SectionHeading
+                id="steps-heading"
                 eyebrow="PROCESS"
                 title={
                   <>
@@ -306,6 +307,7 @@ export default async function ServiceDetailPage({
       <section className="py-16 sm:py-20 lg:py-24" aria-labelledby="faq-heading">
         <div className="mx-auto max-w-4xl px-5 lg:px-8">
           <SectionHeading
+            id="faq-heading"
             eyebrow="FAQ"
             title={`${service.name}のよくあるご質問`}
             as="h2"
@@ -332,7 +334,7 @@ export default async function ServiceDetailPage({
                   <span className="text-[14px] font-medium text-ink-900">{o.name}</span>
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-mist-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
+                    className="shrink-0 text-ink-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
                   >
                     →
                   </span>

@@ -67,7 +67,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja" className={`${notoSansJp.variable} ${playfair.variable}`}>
+    // suppressHydrationWarning: body先頭のインラインスクリプトが
+    // ハイドレーション前に <html> の class を書き換える（.js / .loading）ため、
+    // これがないと毎回ハイドレーション不一致の警告が出る。
+    <html
+      lang="ja"
+      className={`${notoSansJp.variable} ${playfair.variable}`}
+      suppressHydrationWarning
+    >
       <body className="flex min-h-screen flex-col bg-white pb-16 font-sans text-ink-800 antialiased lg:pb-0">
         {/*
           描画前に同期実行させるため body の先頭に置く（ちらつき防止）。

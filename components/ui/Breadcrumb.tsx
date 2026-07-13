@@ -37,7 +37,7 @@ export default function Breadcrumb({ items }: { items: Crumb[] }) {
                 </span>
               )}
               {!last && (
-                <span className="text-mist-400" aria-hidden="true">
+                <span className="text-ink-400" aria-hidden="true">
                   /
                 </span>
               )}

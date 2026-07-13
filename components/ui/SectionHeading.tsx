@@ -1,4 +1,11 @@
 type Props = {
+  /**
+   * 見出しに付けるid。
+   * 親の <section aria-labelledby="..."> から参照するために必須。
+   * これを渡し忘れると、参照先が存在せずセクションが
+   * ランドマーク（領域）として認識されなくなる。
+   */
+  id?: string
   /** 英字の小見出し（例: SERVICES） */
   eyebrow?: string
   /** 見出し本体 */
@@ -14,6 +21,7 @@ type Props = {
 
 /** セクション見出し。斜めバー + 英字ラベル + 日本語見出し。 */
 export default function SectionHeading({
+  id,
   eyebrow,
   title,
   lead,
@@ -41,6 +49,7 @@ export default function SectionHeading({
       )}
 
       <Tag
+        id={id}
         className={`heading-jp mt-4 text-2xl font-bold sm:text-3xl lg:text-[2.1rem] ${
           tone === 'dark' ? 'text-white' : 'text-ink-900'
         }`}

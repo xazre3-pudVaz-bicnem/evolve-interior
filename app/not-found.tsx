@@ -9,6 +9,9 @@ import { COMPANY } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'ページが見つかりません',
   robots: { index: false, follow: true },
+  // layout.tsx の canonical（トップページ）を継承すると、
+  // すべての404 URLが「トップページの複製」だと宣言してしまうため打ち消す。
+  alternates: { canonical: null },
 }
 
 export default function NotFound() {
@@ -17,7 +20,7 @@ export default function NotFound() {
       <div className="mx-auto w-full max-w-3xl px-5 text-center lg:px-8">
         <Mark className="mx-auto h-12 w-auto" gradientId="evolve-mark-404" />
 
-        <p className="mt-10 font-display text-6xl font-bold text-mist-300 sm:text-7xl">404</p>
+        <p className="mt-10 font-display text-6xl font-bold text-ink-400 sm:text-7xl">404</p>
 
         <h1 className="heading-jp mt-6 text-2xl font-bold text-ink-900 sm:text-3xl">
           ページが見つかりませんでした

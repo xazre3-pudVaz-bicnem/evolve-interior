@@ -100,6 +100,7 @@ export default function HomePage() {
 
             <Reveal delay={100} className="lg:pt-8">
               <SectionHeading
+                id="about-heading"
                 eyebrow="ABOUT"
                 title={
                   <>
@@ -137,6 +138,7 @@ export default function HomePage() {
       <section className="bg-mist-50 py-20 sm:py-24 lg:py-30" aria-labelledby="services-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="services-heading"
             eyebrow="SERVICES"
             title="対応できる工事"
             lead="軽鉄・ボード工事を中心に、内装に関わる工事を幅広く承っています。工事の名前が分からない場合でも、やりたいことをお聞かせいただければご案内します。"
@@ -188,7 +190,7 @@ export default function HomePage() {
       {/* ───────────── 4. EVOLVEの強み ───────────── */}
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="strength-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionHeading eyebrow="STRENGTH" title="EVOLVEの強み" as="h2" />
+          <SectionHeading id="strength-heading" eyebrow="STRENGTH" title="EVOLVEの強み" as="h2" />
 
           <div className="mt-16 space-y-20 lg:space-y-24">
             {STRENGTHS.map((s, i) => (
@@ -200,7 +202,7 @@ export default function HomePage() {
               >
                 <Reveal anim={i % 2 === 1 ? 'right' : 'left'}>
                   <div className="flex items-center gap-4">
-                    <span className="font-display text-5xl font-bold text-mist-300">
+                    <span className="font-display text-5xl font-bold text-ink-400">
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     <span className="h-px flex-1 bg-mist-200" aria-hidden="true" />
@@ -355,6 +357,7 @@ export default function HomePage() {
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="works-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="works-heading"
             eyebrow="WORKS"
             title="施工実績"
             lead="軽鉄・ボード工事を中心に、これまでに手がけた工事をご紹介します。"
@@ -419,6 +422,7 @@ export default function HomePage() {
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
             <div className="lg:sticky lg:top-28 lg:self-start">
               <SectionHeading
+                id="flow-heading"
                 eyebrow="FLOW"
                 title={
                   <>
@@ -444,7 +448,7 @@ export default function HomePage() {
       {/* ───────────── 9. 対応エリア ───────────── */}
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="area-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionHeading eyebrow="AREA" title="対応エリア" lead={AREA_SUMMARY} as="h2" />
+          <SectionHeading id="area-heading" eyebrow="AREA" title="対応エリア" lead={AREA_SUMMARY} as="h2" />
 
           <ul className="mt-14 grid gap-px border border-mist-200 bg-mist-200 sm:grid-cols-2 lg:grid-cols-4">
             {AREAS.map((area, i) => (
@@ -531,6 +535,7 @@ export default function HomePage() {
       <section className="py-20 sm:py-24 lg:py-30" aria-labelledby="instagram-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading
+            id="instagram-heading"
             eyebrow="INSTAGRAM"
             title="施工の様子を発信しています"
             lead="日々の現場や施工の様子は、Instagramでご覧いただけます。"

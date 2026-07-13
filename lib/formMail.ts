@@ -1,4 +1,4 @@
-import { COMPANY, SITE_NAME } from './constants'
+import { COMPANY } from './constants'
 import type { ContactInput, ApplyInput } from './validate'
 
 /**
@@ -84,5 +84,3 @@ export function isMailtoTooLong(subject: string, body: string): boolean {
   return mailtoHref(subject, body).length > MAILTO_SAFE_LENGTH
 }
 
-/** 会社名を使う場所があるので再エクスポート */
-export { SITE_NAME }

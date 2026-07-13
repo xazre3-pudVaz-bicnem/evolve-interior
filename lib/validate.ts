@@ -127,3 +127,25 @@ export function validateApply(v: Partial<ApplyInput>): Errors<ApplyInput> {
 export function hasErrors<T>(e: Errors<T>): boolean {
   return Object.keys(e).length > 0
 }
+
+/**
+ * 入力不備があったとき、最初のエラー項目へフォーカスを移す。
+ *
+ * スクロールするだけだと、キーボード利用者のフォーカスは送信ボタンに
+ * 残ったままになり、どこを直せばいいのか分からない。
+ * また [aria-invalid] が付くのは <fieldset> のこともあるため、
+ * その場合は中の最初の入力要素を探してフォーカスする。
+ */
+export function focusFirstError() {
+  requestAnimationFrame(() => {
+    const invalid = document.querySelector<HTMLElement>('[aria-invalid="true"]')
+    if (!invalid) return
+
+    const target = invalid.matches('input, select, textarea')
+      ? invalid
+      : invalid.querySelector<HTMLElement>('input, select, textarea')
+
+    ;(target ?? invalid).focus({ preventScroll: true })
+    invalid.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  })
+}

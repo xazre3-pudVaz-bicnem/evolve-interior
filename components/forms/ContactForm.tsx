@@ -12,7 +12,13 @@ import {
   Honeypot,
 } from './Fields'
 import MailtoPanel from './MailtoPanel'
-import { validateContact, hasErrors, type ContactInput, type Errors } from '@/lib/validate'
+import {
+  validateContact,
+  hasErrors,
+  focusFirstError,
+  type ContactInput,
+  type Errors,
+} from '@/lib/validate'
 import { buildContactMail, mailtoHref } from '@/lib/formMail'
 import { COMPANY, FORM_MODE } from '@/lib/constants'
 import { SERVICES } from '@/lib/services'
@@ -62,7 +68,13 @@ export default function ContactForm() {
 
   const set = <K extends keyof ContactInput>(key: K, v: ContactInput[K]) => {
     setValues((prev) => ({ ...prev, [key]: v }))
-    setErrors((prev) => ({ ...prev, [key]: undefined }))
+    setErrors((prev) => {
+      const next = { ...prev, [key]: undefined }
+      // 会社名の必須判定は「個人／法人」に連動する。
+      // 法人→個人 に切り替えたとき、会社名のエラーが残ったままになるため一緒に消す。
+      if (key === 'entityType' && v !== '法人') next.company = undefined
+      return next
+    })
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -73,12 +85,8 @@ export default function ContactForm() {
     setErrors(found)
 
     if (hasErrors(found)) {
-      // 最初のエラー項目へ移動
-      requestAnimationFrame(() => {
-        document
-          .querySelector('[aria-invalid="true"]')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-      })
+      // 最初のエラー項目へフォーカスを移す（スクロールだけでは不十分）
+      focusFirstError()
       return
     }
 

@@ -55,7 +55,7 @@ export default function PhotoFrame({
         {label && (
           <span
             className={`text-center text-[11px] tracking-[0.16em] ${
-              isDark ? 'text-white/50' : 'text-ink-400'
+              isDark ? 'text-white/70' : 'text-ink-500'
             }`}
           >
             {label}

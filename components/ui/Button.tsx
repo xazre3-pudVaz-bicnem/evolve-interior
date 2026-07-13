@@ -21,7 +21,9 @@ type Props = {
 const VARIANTS: Record<Variant, string> = {
   primary: 'bg-brand-700 text-white hover:bg-brand-800',
   dark: 'bg-ink-900 text-white hover:bg-ink-800',
-  outline: 'border border-mist-300 bg-white text-ink-900 hover:border-ink-900',
+  // 枠線はボタンの境界を示す唯一の手がかりなので 3:1 以上が必要（WCAG 1.4.11）。
+  // mist-300 は白背景で 1.36:1 しかないため ink-400（3.2:1）を使う。
+  outline: 'border border-ink-400 bg-white text-ink-900 hover:border-ink-900',
   outlineLight: 'border border-white/30 text-white hover:bg-white/10',
 }
 

@@ -22,8 +22,11 @@
   --color-brand-800: #0d5730;
   --color-brand-900: #0a3f24;
 
-  /* ---- Ink（黒・チャコールグレー：アクセント／本文） ---- */
-  --color-ink-400: #949aa0;
+  /* ---- Ink（黒・チャコールグレー：アクセント／本文） ----
+     ※ 白背景でのコントラスト
+       ink-400 #8B9298 = 3.2:1 → 大きい文字（24px以上）と図形のみ。小さい文字には使わない
+       ink-500 #6B7278 = 4.9:1 → 小さい文字はこれ以上を使う（本文・注記・キャプション） */
+  --color-ink-400: #8b9298;
   --color-ink-500: #6b7278;
   --color-ink-600: #454b50;
   --color-ink-700: #2b3033;
@@ -320,12 +323,35 @@ textarea {
 
 .js.loading #loader {
   display: flex;
+
+  /*
+    保険。
+
+    .loading はインラインスクリプトが必ず付けるが、それを外すのは
+    Loader コンポーネントの useEffect だけ。
+    JSバンドルの読み込みに失敗した／ハイドレーションが例外で止まった場合、
+    ローディング画面が消えず、真っ黒な画面のまま操作不能になってしまう。
+    （本文はサーバー側で描画済みなのに読めない、という最悪の状態）
+
+    そこでCSS側にも退場アニメーションを入れ、JSが動かなくても必ず消えるようにする。
+    正常時は 1.3秒で .loaded が付き、そちらの規則が優先されるため出番はない。
+  */
+  animation: loaderFailsafe 0.6s ease 4s forwards;
 }
 
-/* 読み込み中は背面をスクロールさせない */
-.js.loading:not(.loaded) body {
-  overflow: hidden;
+@keyframes loaderFailsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
+
+/*
+  背面のスクロール固定は、CSSではなくJS（Loader）側で行う。
+  CSSでやると、JSが動かなかったときに解除されず、
+  ページが永久にスクロールできなくなるため。
+*/
 
 /* 上へ切り上がって消える */
 .js.loading.loaded #loader {

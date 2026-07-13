@@ -87,7 +87,9 @@ export const organizationSchema = {
   email: COMPANY.email,
   telephone: COMPANY.phone,
   address: POSTAL_ADDRESS,
-  founder: { '@type': 'Person', name: COMPANY.ceo },
+  // ※ founder（創業者）は使わない。提供されているのは「代表者」であって、
+  //   その人物が創業者かどうかは確認できていない（推測で断定しない）。
+  employee: [{ '@type': 'Person', name: COMPANY.ceo, jobTitle: COMPANY.ceoRole }],
   sameAs: [INSTAGRAM_URL],
 }
 

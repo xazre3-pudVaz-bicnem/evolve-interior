@@ -18,7 +18,9 @@ import {
 import { SERVICES } from '@/lib/services'
 import { pageMeta, webPageSchema } from '@/lib/seo'
 
-const TITLE = '会社概要｜株式会社EVOLVE（兵庫県尼崎市）'
+// ※ 社名を入れないこと。layout.tsx の title.template が
+//    「%s｜株式会社EVOLVE」を後ろに付けるため、二重になる。
+const TITLE = '会社概要｜兵庫県尼崎市の内装工事会社'
 const DESCRIPTION =
   '株式会社EVOLVEの会社概要。兵庫県尼崎市大庄中通を拠点に、軽鉄工事・ボード工事を中心とした内装工事を手がけています。代表は元田健司郎。兵庫・大阪・京都・滋賀を中心とした関西エリアに対応しています。'
 
@@ -166,7 +168,7 @@ export default function CompanyPage() {
       {/* アクセス */}
       <section className="py-16 sm:py-20 lg:py-24" aria-labelledby="access-heading">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionHeading eyebrow="ACCESS" title="所在地" as="h2" />
+          <SectionHeading id="access-heading" eyebrow="ACCESS" title="所在地" as="h2" />
 
           <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
             <div>

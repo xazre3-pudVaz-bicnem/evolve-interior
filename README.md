@@ -103,14 +103,7 @@ Resend以外を使う場合は `lib/mail.ts` の `sendMail()` の中だけを差
 支給された写真は EXIF（GPS位置情報を含む）を除去したうえで配置済み。
 元ファイルは `design/originals/` に保管してある（publicには置いていない）。
 
-**未設置＝仮枠のまま（写真をいただければ差し替えます）**
-
-| ファイル名 | 使われる場所 |
-| --- | --- |
-| `service-kitchen-panel.jpg` | キッチンパネル工事のページ |
-| `service-wallpaper.jpg` | クロス工事のページ |
-| `service-painting.jpg` | 塗装工事のページ |
-| `day-break.jpg` | 一日の流れ（昼休憩） |
+**現在、仮枠は1枚も残っていません（全スロット設置済み）。**
 
 **設置済み**
 
@@ -124,15 +117,25 @@ Resend以外を使う場合は `lib/mail.ts` の `sendMail()` の中だけを差
 | `recruit-hero-1.jpg` / `recruit-hero-2.jpg` | 採用ページ ヒーロー |
 | `company.jpg` | 会社概要 |
 | `banner-services.jpg`（※AI生成）/ `banner-works.jpg` / `banner-company.jpg` / `banner-contact.jpg` / `banner-requirements.jpg` / `banner-day.jpg` | 各下層ページのバナー |
-| `service-light-gauge-steel.jpg` ほか工事別6点 | 事業内容の各ページ |
-| `day-morning.jpg` / `day-work.jpg` / `day-afternoon.jpg` / `day-end.jpg` | 一日の流れ |
+| `service-light-gauge-steel.jpg` ほか工事別9点 | 事業内容の各ページ |
+| `day-morning.jpg` / `day-work.jpg` / `day-break.jpg`（※AI生成）/ `day-afternoon.jpg` / `day-end.jpg` | 一日の流れ |
 | `instagram-1.jpg` 〜 `instagram-6.jpg` | Instagram欄 |
 | `images/works/*.jpg` | 施工実績 |
 
-> **AI生成画像について**
-> `customer.jpg` / `corporate.jpg` / `banner-services.jpg` の3点はAIで生成された画像です。
-> 実際のEVOLVEの現場・スタッフではないため、「説明用のイメージ」としてのみ配置し、
-> **施工実績には一切使っていません。** 実写に差し替える場合は、同じファイル名で上書きしてください。
+> **AI生成画像について（計7点）**
+>
+> `customer.jpg` / `corporate.jpg` / `banner-services.jpg` /
+> `service-kitchen-panel.jpg` / `service-wallpaper.jpg` / `service-painting.jpg` /
+> `day-break.jpg` の7点はAIで生成された画像です。
+>
+> 実際のEVOLVEの現場・スタッフではないため、**「その工事の説明用イメージ」としてのみ**配置し、
+> **施工実績（`/works`）には一切使っていません。** 施工実績はすべて支給された実写です。
+> 実写に差し替える場合は、同じファイル名で上書きしてください（コード変更不要）。
+
+> **altテキストについて**
+>
+> alt は「写真に実際に写っているもの」を書くこと。見出しから機械的に生成しない。
+> 工事別は `lib/services.ts` の `imageAlt`、一日の流れは `lib/recruit.ts` の `alt` に持たせている。
 
 ---
 

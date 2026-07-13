@@ -67,7 +67,7 @@ export default function ServicesPage() {
                 >
                   <Photo
                     src={s.image}
-                    alt={`${s.name}の施工の様子`}
+                    alt={s.imageAlt}
                     label={s.name}
                     ratio="16 / 10"
                     tone="light"
@@ -76,11 +76,11 @@ export default function ServicesPage() {
 
                   <div>
                     <div className="flex items-center gap-4">
-                      <span className="font-display text-4xl font-bold text-mist-300">
+                      <span className="font-display text-4xl font-bold text-ink-400">
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <span className="h-px flex-1 bg-mist-200" aria-hidden="true" />
-                      <span className="text-[10px] tracking-[0.2em] text-ink-400">
+                      <span className="text-[10px] tracking-[0.2em] text-ink-500">
                         {s.nameEn.toUpperCase()}
                       </span>
                     </div>
@@ -115,6 +115,7 @@ export default function ServicesPage() {
       <section className="bg-mist-50 py-20 sm:py-24" aria-labelledby="faq-heading">
         <div className="mx-auto max-w-4xl px-5 lg:px-8">
           <SectionHeading
+            id="faq-heading"
             eyebrow="FAQ"
             title="よくあるご質問"
             lead="工事のご相談について、よくいただく質問をまとめました。ここにない内容も、お気軽にお問い合わせください。"

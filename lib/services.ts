@@ -59,6 +59,8 @@ export type Service = {
   faqs: { q: string; a: string }[]
   /** 期待する画像ファイル名（public/images/ 配下・未設置なら仮枠を表示） */
   image: string
+  /** 写真に実際に写っているものを説明する alt。見出しから機械的に生成しないこと */
+  imageAlt: string
   metaTitle: string
   metaDescription: string
   keywords: string[]
@@ -132,6 +134,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-light-gauge-steel.jpg',
+    imageAlt: '楕円形の下がり天井に組まれた軽量鉄骨の下地',
     metaTitle: '軽鉄工事（軽量鉄骨下地）｜尼崎・兵庫・大阪・京都・滋賀',
     metaDescription:
       '軽鉄工事（軽量鉄骨下地・LGS工事）は、建物の壁や天井の骨組みをつくる工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、店舗・オフィス・住宅の内装下地工事に対応。建設会社・工務店・一般のお客様からのご相談を承ります。',
@@ -213,6 +216,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-board.jpg',
+    imageAlt: '楕円形の下がり天井に石膏ボードを張り込んだ状態',
     metaTitle: 'ボード工事（石膏ボード・内装下地）｜尼崎・兵庫・大阪',
     metaDescription:
       'ボード工事は、軽鉄や木の骨組みに石膏ボードを張り、壁や天井の下地をつくる工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、店舗・オフィス・住宅のボード工事に対応。軽鉄工事からの一貫したご相談も承ります。',
@@ -292,6 +296,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-calcium-silicate-board.jpg',
+    imageAlt: '化粧ボードで仕上げられた室内の壁と天井',
     metaTitle: '化粧ケイカル工事｜厨房・水まわりの壁面施工｜尼崎・関西',
     metaDescription:
       '化粧ケイカル工事は、水や熱に比較的強い化粧ケイカル板を厨房や水まわりの壁面に施工する工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、飲食店・店舗・施設の化粧ケイカル施工に対応しています。',
@@ -366,6 +371,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-kitchen-panel.jpg',
+    imageAlt: 'キッチンの壁面に施工された、光沢のあるパネル',
     metaTitle: 'キッチンパネル工事｜住宅・店舗厨房の壁面施工｜尼崎・関西',
     metaDescription:
       'キッチンパネル工事は、キッチン周辺の壁に汚れを拭き取りやすいパネルを施工する工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、住宅のキッチンから店舗の厨房まで対応しています。',
@@ -455,6 +461,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-system-ceiling.jpg',
+    imageAlt: '岩綿吸音板と空調の吹出口が納まった天井',
     metaTitle: 'システム天井工事｜オフィス・会議室の天井施工｜尼崎・関西',
     metaDescription:
       'システム天井工事は、設備の点検やレイアウト変更がしやすい、オフィスなどで使われる天井を施工する工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、オフィス・テナントの天井工事に対応しています。',
@@ -533,6 +540,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-carpentry.jpg',
+    imageAlt: '木の仕上げ材で覆われた、大型の曲面造作',
     metaTitle: '大工造作工事｜棚・間仕切り・カウンターの造作｜尼崎・関西',
     metaDescription:
       '大工造作工事は、木材を使って壁・天井・棚・間仕切りなど、空間に合わせた造作を行う工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、店舗・住宅・事務所の造作工事に対応しています。',
@@ -608,6 +616,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-wallpaper.jpg',
+    imageAlt: '壁紙を貼り込んでいる室内と、壁紙のロールや施工道具',
     metaTitle: 'クロス工事（壁紙・内装仕上げ）｜尼崎・兵庫・大阪',
     metaDescription:
       'クロス工事は、壁や天井の下地に壁紙を貼り、室内を仕上げる工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、住宅・店舗・オフィスのクロス工事に対応。下地のボード工事からのご相談も承ります。',
@@ -683,6 +692,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-painting.jpg',
+    imageAlt: 'ローラーで塗装している途中の壁と、養生された床',
     metaTitle: '塗装工事（内装・木部・鉄部）｜尼崎・兵庫・大阪',
     metaDescription:
       '塗装工事は、壁や天井、木部・鉄部などに塗料を塗って仕上げる工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、内装の塗装工事に対応しています。工事内容によって対応範囲が異なるため、まずはご相談ください。',
@@ -760,6 +770,7 @@ export const SERVICES: Service[] = [
       },
     ],
     image: 'service-siding.jpg',
+    imageAlt: 'レンガ調のサイディングを張った外壁',
     metaTitle: 'サイディング工事｜壁面の張り付け・目地処理｜尼崎・関西',
     metaDescription:
       'サイディング工事は、サイディングボードを壁面に張って仕上げる工事です。株式会社EVOLVEは兵庫県尼崎市を拠点に、対応の可否を含めてご相談を承ります。現場の状況と写真をお送りください。',
@@ -772,8 +783,6 @@ export const SERVICES: Service[] = [
     ],
   },
 ]
-
-export const SERVICE_SLUGS = SERVICES.map((s) => s.slug)
 
 export function getService(slug: string): Service | undefined {
   return SERVICES.find((s) => s.slug === slug)

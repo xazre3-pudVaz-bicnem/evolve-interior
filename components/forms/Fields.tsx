@@ -5,7 +5,22 @@ import { useId } from 'react'
 /* ──────────────── 共通パーツ ──────────────── */
 
 const FIELD_BASE =
-  'w-full border border-mist-300 bg-white px-4 py-3.5 text-ink-900 placeholder:text-ink-400 transition-colors focus:border-brand-700 focus:outline-none focus:ring-1 focus:ring-brand-700 aria-[invalid=true]:border-red-600 aria-[invalid=true]:ring-red-600'
+  // ・枠線は入力欄を識別する唯一の手がかりなので、3:1 以上が必要（WCAG 1.4.11）。
+  //   mist-300 は白背景で 1.36:1 しかないため ink-400（3.2:1）を使う。
+  // ・プレースホルダも文字なので 4.5:1 を満たす ink-500 を使う。
+  'w-full border border-ink-400 bg-white px-4 py-3.5 text-ink-900 placeholder:text-ink-500 transition-colors focus:border-brand-700 focus:outline-none focus:ring-1 focus:ring-brand-700 aria-[invalid=true]:border-red-600 aria-[invalid=true]:ring-red-600'
+
+/**
+ * 選択肢のチップ（ラジオ／チェックボックス）。
+ *
+ * ラジオの input は sr-only（画面から隠す）なので、
+ * そのままだとキーボードでフォーカスしても何も見えない。
+ * has-[:focus-visible] でチップ自体にフォーカスリングを出す。
+ */
+const CHIP_BASE =
+  'cursor-pointer border transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-700 has-[:focus-visible]:ring-offset-2'
+const CHIP_ON = 'border-brand-700 bg-brand-50 font-medium text-brand-800'
+const CHIP_OFF = 'border-ink-400 bg-white text-ink-700 hover:border-ink-900'
 
 export function Label({
   htmlFor,
@@ -230,7 +245,10 @@ export function RadioField({
   const hintId = `${id}-hint`
 
   return (
+    // role="radiogroup" にする。<fieldset> の既定ロール group は
+    // aria-invalid をサポートしておらず、エラー状態が支援技術に伝わらない。
     <fieldset
+      role="radiogroup"
       aria-describedby={`${error ? errId : ''} ${hint ? hintId : ''}`.trim() || undefined}
       aria-invalid={Boolean(error)}
     >
@@ -239,7 +257,7 @@ export function RadioField({
         {required ? (
           <span className="bg-brand-700 px-1.5 py-0.5 text-[10px] font-medium text-white">必須</span>
         ) : (
-          <span className="border border-mist-300 px-1.5 py-0.5 text-[10px] text-ink-500">任意</span>
+          <span className="border border-ink-400 px-1.5 py-0.5 text-[10px] text-ink-500">任意</span>
         )}
       </legend>
 
@@ -249,11 +267,7 @@ export function RadioField({
           return (
             <label
               key={o}
-              className={`cursor-pointer border px-4 py-3 text-[14px] transition-colors ${
-                checked
-                  ? 'border-brand-700 bg-brand-50 font-medium text-brand-800'
-                  : 'border-mist-300 bg-white text-ink-700 hover:border-ink-400'
-              }`}
+              className={`${CHIP_BASE} px-4 py-3 text-[14px] ${checked ? CHIP_ON : CHIP_OFF}`}
             >
               <input
                 type="radio"
@@ -305,16 +319,17 @@ export function CheckboxGroupField({
   }
 
   return (
+    // <fieldset> の既定ロール group は aria-invalid をサポートしないため、
+    // グループではなく各チェックボックスに aria-invalid を付ける。
     <fieldset
       aria-describedby={`${error ? errId : ''} ${hint ? hintId : ''}`.trim() || undefined}
-      aria-invalid={Boolean(error)}
     >
       <legend className="flex items-center gap-2 text-sm font-medium text-ink-900">
         {legend}
         {required ? (
           <span className="bg-brand-700 px-1.5 py-0.5 text-[10px] font-medium text-white">必須</span>
         ) : (
-          <span className="border border-mist-300 px-1.5 py-0.5 text-[10px] text-ink-500">任意</span>
+          <span className="border border-ink-400 px-1.5 py-0.5 text-[10px] text-ink-500">任意</span>
         )}
       </legend>
 
@@ -324,10 +339,8 @@ export function CheckboxGroupField({
           return (
             <label
               key={o}
-              className={`flex cursor-pointer items-center gap-3 border px-4 py-3 text-[14px] transition-colors ${
-                checked
-                  ? 'border-brand-700 bg-brand-50 font-medium text-brand-800'
-                  : 'border-mist-300 bg-white text-ink-700 hover:border-ink-400'
+              className={`flex items-center gap-3 ${CHIP_BASE} px-4 py-3 text-[14px] ${
+                checked ? CHIP_ON : CHIP_OFF
               }`}
             >
               <input
@@ -336,6 +349,8 @@ export function CheckboxGroupField({
                 value={o}
                 checked={checked}
                 onChange={() => toggle(o)}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errId : undefined}
                 className="h-4 w-4 shrink-0 accent-[#0b6e3a]"
               />
               {o}

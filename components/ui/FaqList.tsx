@@ -24,7 +24,7 @@ export default function FaqList({ faqs, className = '' }: Props) {
             </span>
             <span className="flex-1">{faq.q}</span>
             <span
-              className="mt-1 shrink-0 text-ink-400 transition-transform duration-200 group-open:rotate-45"
+              className="mt-1 shrink-0 text-ink-500 transition-transform duration-200 group-open:rotate-45"
               aria-hidden="true"
             >
               ＋
@@ -32,7 +32,7 @@ export default function FaqList({ faqs, className = '' }: Props) {
           </summary>
           <div className="flex gap-4 pb-6 pr-8">
             <span
-              className="shrink-0 font-display text-sm font-bold text-ink-400"
+              className="shrink-0 font-display text-sm font-bold text-ink-500"
               aria-hidden="true"
             >
               A

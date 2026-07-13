@@ -18,13 +18,11 @@ type Props = {
  */
 export default function ProcessSteps({ steps, label = 'STEP', className = '' }: Props) {
   return (
-    <ol className={`relative ${className}`}>
-      {/* 縦のライン */}
-      <div
-        className="absolute left-[19px] top-2 bottom-2 w-px bg-mist-200 sm:left-[27px]"
-        aria-hidden="true"
-      />
-
+    // 縦のラインは <ol> の疑似要素で描く。
+    // <ol> の直下に置けるのは <li> だけなので、<div> を入れてはいけない。
+    <ol
+      className={`relative ${className} before:absolute before:left-[19px] before:top-2 before:bottom-2 before:w-px before:bg-mist-200 before:content-[''] sm:before:left-[27px]`}
+    >
       {steps.map((step, i) => (
         <Reveal as="li" key={step.title} delay={i * 60} className="relative flex gap-5 pb-9 last:pb-0 sm:gap-7">
           {/* 番号 */}
