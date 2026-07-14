@@ -21,6 +21,8 @@ export const COMPANY = {
   ceoRole: '代表者',
   /** 住所（表示用・構造化データ用で完全一致させる） */
   address: '兵庫県尼崎市大庄中通5-27-6',
+  /** 郵便番号。EVOLVE社のGoogleビジネスプロフィールで確認済み */
+  postalCode: '660-0075',
   addressRegion: '兵庫県',
   addressLocality: '尼崎市',
   streetAddress: '大庄中通5-27-6',
@@ -39,12 +41,35 @@ export const COMPANY = {
 
 /**
  * Googleマップ。
- * 緯度経度は未確認のため構造化データには含めない（捏造しない）。
- * 住所検索リンクのみ設置し、iframe埋め込みは位置確認が取れるまで保留。
+ *
+ * EVOLVE社から共有されたリンク（https://share.google/f1xtnprzGQjTDOme0）を辿って確認した結果、
+ * Googleマップ上に「株式会社EVOLVE」のピンが立ち、
+ * 住所が「〒660-0075 兵庫県尼崎市大庄中通5丁目27-6」と表示されることを確認済み。
+ * サイトの表記と一致する。
+ *
+ * ★ 共有リンク（share.google/...）そのものをリンク先に使ってはいけない。
+ *   開くとGoogleマップではなく「検索結果ページ」に飛ぶ。
+ *   「Googleマップで開く」ボタンが地図を開かない、という状態になる。
+ *   下の公式のMaps URLスキームを使うこと（スマホではマップアプリが開き、経路案内に進める）。
  */
-export const GOOGLE_MAP_SEARCH_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  COMPANY.address,
-)}`
+const MAP_QUERY = encodeURIComponent(`${SITE_NAME} ${COMPANY.address}`)
+
+/** 「Googleマップで開く」用（公式のMaps URLスキーム） */
+export const GOOGLE_MAP_URL = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`
+
+/**
+ * 地図の埋め込み用URL。
+ * ※ このURLは iframe の中でしか動かない（直接開くとエラーになる仕様）。
+ */
+export const GOOGLE_MAP_EMBED_URL = `https://maps.google.com/maps?q=${MAP_QUERY}&hl=ja&z=17&output=embed`
+
+/**
+ * 緯度経度。
+ * Googleマップ上の「株式会社EVOLVE」のピンから取得した実測値
+ * （/maps/place/株式会社EVOLVE/@34.7190785,135.391342）。
+ * 推測ではないので、構造化データの geo に使える。
+ */
+export const GEO = { lat: 34.7190785, lng: 135.391342 } as const
 
 export const INSTAGRAM_URL = 'https://www.instagram.com/evolv_e96/?hl=ja'
 export const INSTAGRAM_HANDLE = '@evolv_e96'

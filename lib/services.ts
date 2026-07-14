@@ -72,7 +72,7 @@ export const SERVICES: Service[] = [
     name: '軽鉄工事',
     nameEn: 'Light Gauge Steel',
     short: '壁や天井の骨組みを、軽量の鉄製材料でつくる工事です。',
-    lead: '建物の内側を形づくる、いちばん最初の工程。EVOLVEが最も得意とする工事です。',
+    lead: '建物の内側を形づくる、いちばん最初の工程。EVOLVEが主軸とする工事です。',
     plain:
       '建物の壁や天井の骨組みを、軽量の鉄製材料でつくる工事です。店舗、事務所、住宅などの室内空間を形づくる重要な工程です。',
     detail: [

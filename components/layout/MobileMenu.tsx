@@ -208,7 +208,7 @@ export default function MobileMenu({ tone = 'light' }: Props) {
                     className="flex items-center justify-between py-4 text-base font-medium text-ink-900"
                   >
                     {item.label}
-                    <span aria-hidden="true" className="text-ink-400">
+                    <span aria-hidden="true" className="text-ink-500">
                       →
                     </span>
                   </Link>

@@ -45,6 +45,20 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
   const [subOpen, setSubOpen] = useState(false)
   const subRef = useRef<HTMLLIElement>(null)
 
+  /**
+   * マウスポインタがこの項目の上にあるか。
+   *
+   * ★ これが無いと「▼ を押すとメニューが閉じる」バグが起きる。
+   *   マウスの場合、▼ に向かってポインタを動かした時点で onPointerEnter が発火し、
+   *   すでにメニューは開いている。そこで onClick がトグルすると true → false になり、
+   *   「開くボタンを押したのに閉じた」ように見える。
+   *   （タッチでは onPointerEnter を pointerType で弾いているので同じ問題は起きない）
+   *
+   *   マウスではホバーが開閉を担うため、クリックでは閉じない。
+   *   離れれば onPointerLeave で閉じる。
+   */
+  const hovering = useRef(false)
+
   const closeSub = () => setSubOpen(false)
 
   useEffect(() => {
@@ -148,10 +162,14 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
                     // タッチでも onMouseEnter は発火するため、そのままだと
                     // 「開く→クリックでトグル→閉じる」となり、タップしても何も起きない。
                     onPointerEnter={(e) => {
-                      if (e.pointerType === 'mouse') setSubOpen(true)
+                      if (e.pointerType !== 'mouse') return
+                      hovering.current = true
+                      setSubOpen(true)
                     }}
                     onPointerLeave={(e) => {
-                      if (e.pointerType === 'mouse') closeSub()
+                      if (e.pointerType !== 'mouse') return
+                      hovering.current = false
+                      closeSub()
                     }}
                     // フォーカスがこの項目の外へ出たら閉じる（Tabで抜けたとき）
                     onBlur={(e) => {
@@ -171,7 +189,15 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
                           aria-expanded で開閉状態を伝える */}
                       <button
                         type="button"
-                        onClick={() => setSubOpen((v) => !v)}
+                        onClick={() => {
+                          // マウスでホバー中は、ホバーがすでに開いている。
+                          // ここでトグルすると閉じてしまうので、開いたままにする。
+                          if (hovering.current) {
+                            setSubOpen(true)
+                            return
+                          }
+                          setSubOpen((v) => !v)
+                        }}
                         aria-expanded={subOpen}
                         aria-controls="services-submenu"
                         aria-label={`${item.label}のサブメニューを${subOpen ? '閉じる' : '開く'}`}

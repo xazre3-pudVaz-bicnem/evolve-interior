@@ -6,23 +6,17 @@ import Photo from '@/components/ui/Photo'
 import Reveal from '@/components/ui/Reveal'
 import SectionHeading from '@/components/ui/SectionHeading'
 import ContactCta from '@/components/ui/ContactCta'
+import GoogleMap from '@/components/ui/GoogleMap'
 import JsonLd from '@/components/ui/JsonLd'
 
-import {
-  COMPANY,
-  SITE_NAME,
-  AREAS,
-  AREA_SUMMARY,
-  GOOGLE_MAP_SEARCH_URL,
-} from '@/lib/constants'
+import { COMPANY, SITE_NAME, AREAS, AREA_SUMMARY } from '@/lib/constants'
 import { SERVICES } from '@/lib/services'
 import { pageMeta, webPageSchema } from '@/lib/seo'
 
 // ※ 社名を入れないこと。layout.tsx の title.template が
 //    「%s｜株式会社EVOLVE」を後ろに付けるため、二重になる。
 const TITLE = '会社概要｜兵庫県尼崎市の内装工事会社'
-const DESCRIPTION =
-  '株式会社EVOLVEの会社概要。兵庫県尼崎市大庄中通を拠点に、軽鉄工事・ボード工事を中心とした内装工事を手がけています。代表は元田健司郎。兵庫・大阪・京都・滋賀を中心とした関西エリアに対応しています。'
+const DESCRIPTION = `株式会社EVOLVEの会社概要。兵庫県尼崎市大庄中通を拠点に、軽鉄工事・ボード工事を中心とした内装工事を手がけています。代表者は${COMPANY.ceo}。兵庫・大阪・京都・滋賀を中心とした関西エリアに対応しています。`
 
 export const metadata: Metadata = pageMeta({
   title: TITLE,
@@ -90,13 +84,23 @@ export default function CompanyPage() {
         imageAlt="木目の仕上げ材が張られた大型天井の施工現場"
       />
 
-      {/* 代表メッセージ的な導入 */}
+      {/* 会社としての考え方（代表個人のメッセージではない。下のコメント参照） */}
       <section className="py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+            {/*
+              ★ ここを「代表メッセージ」にして代表者の氏名で署名してはいけない。
+                この文章は代表者本人が書いたものではない。
+                実在する個人の名前で、本人が言っていない言葉を公開することになる。
+
+                そのため、会社としての考え方（一人称は「EVOLVE」「私たち」）として書き、
+                個人の署名は入れていない。
+                代表者本人の言葉を載せる場合は、本人に文章を確認・承認してもらってから
+                署名を付けること。
+            */}
             <Reveal>
               <SectionHeading
-                eyebrow="MESSAGE"
+                eyebrow="OUR APPROACH"
                 title={
                   <>
                     技術は、現場でしか
@@ -115,17 +119,12 @@ export default function CompanyPage() {
                   それでも、壁がまっすぐ立っているか、天井が水平に張られているか、継ぎ目に段差がないか。仕上がりの印象を決めているのは、この見えない部分です。だからEVOLVEは、隠れる工程にこそ手を抜かないことを基本にしています。
                 </p>
                 <p>
-                  現場では、20代の若いスタッフが多く動いています。未経験から始めた人間が技術を覚えていく横で、経験を積んだ職人が手本を見せる。教える側と学ぶ側が同じ現場にいることが、私たちの日常です。
+                  現場では、20代の若いスタッフが多く動いています。未経験から始めた人が技術を覚えていく環境をつくりながら、経験を積んだ方の技術は正当に評価する。その両方を大切にしています。
                 </p>
                 <p>
                   工事のご相談も、一緒に働きたいという方も、まずはご連絡ください。
                 </p>
               </div>
-
-              <p className="mt-10 text-[13px] text-ink-500">
-                {SITE_NAME}　{COMPANY.ceoRole}
-              </p>
-              <p className="mt-1 text-lg font-bold text-ink-900">{COMPANY.ceo}</p>
             </Reveal>
 
             <Reveal delay={80}>
@@ -170,11 +169,16 @@ export default function CompanyPage() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionHeading id="access-heading" eyebrow="ACCESS" title="所在地" as="h2" />
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
+          {/* 地図（EVOLVE社のビジネスプロフィールと住所が一致することを確認済み） */}
+          <GoogleMap className="mt-10" />
+
+          <div className="mt-14 grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
             <div>
               <address className="not-italic">
                 <p className="text-lg font-bold text-ink-900">{SITE_NAME}</p>
-                <p className="mt-3 text-[15px] leading-[1.9] text-ink-700">{COMPANY.address}</p>
+                <p className="mt-3 text-[15px] leading-[1.9] text-ink-700">
+                  〒{COMPANY.postalCode}　{COMPANY.address}
+                </p>
 
                 <dl className="mt-6 space-y-3 text-[14.5px]">
                   <div className="flex gap-3">
@@ -206,20 +210,6 @@ export default function CompanyPage() {
                 </dl>
               </address>
 
-              <a
-                href={GOOGLE_MAP_SEARCH_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group mt-8 inline-flex items-center gap-2.5 border border-mist-300 px-6 py-3.5 text-[14px] font-medium text-ink-900 transition-colors hover:border-ink-900"
-              >
-                Googleマップで所在地を見る
-                <span
-                  aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                >
-                  →
-                </span>
-              </a>
             </div>
 
             {/* 対応エリア */}

@@ -82,7 +82,32 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     ),
   },
   {
-    title: '7. 本方針の変更',
+    title: '7. 外部サービスの利用について',
+    body: (
+      <>
+        <p>
+          当社のウェブサイトでは、所在地をご案内するために Google
+          社が提供する地図サービス（Googleマップ）を埋め込んで表示しています。地図が表示される際に、Google
+          社によってCookieが利用され、閲覧情報が同社に送信される場合があります。
+        </p>
+        <p className="mt-4">
+          取得される情報の取り扱いについては、Google社のプライバシーポリシーをご確認ください。
+        </p>
+        <p className="mt-4">
+          <a
+            href="https://policies.google.com/privacy?hl=ja"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-brand-700 underline underline-offset-4"
+          >
+            Google プライバシーポリシー
+          </a>
+        </p>
+      </>
+    ),
+  },
+  {
+    title: '8. 本方針の変更',
     body: (
       <p>
         当社は、必要に応じて本方針を変更することがあります。変更した場合は、本ページに掲載します。

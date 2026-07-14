@@ -48,7 +48,7 @@ export default function WorksPage() {
         title="施工実績"
         lead="軽鉄・ボード工事を中心に、これまでに手がけた工事をご紹介します。"
         image="banner-works.jpg"
-        imageAlt="大型施設の曲面造作と天井下地の施工現場"
+        imageAlt="大空間の曲面造作と天井下地の施工現場"
       />
 
       <section className="py-16 sm:py-20 lg:py-24">
@@ -84,7 +84,7 @@ export default function WorksPage() {
               <p className="mb-10 border-l-2 border-brand-500 bg-mist-50 p-5 text-[13.5px] leading-[1.9] text-ink-600">
                 {WORKS_DETAIL_NOTE}
                 <br />
-                掲載していない工事も多数あります。詳しい施工内容や対応可否については、お問い合わせください。
+                詳しい施工内容や対応可否については、お問い合わせください。
               </p>
 
               <WorksGallery works={resolved} />

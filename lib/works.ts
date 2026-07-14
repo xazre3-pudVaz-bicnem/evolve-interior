@@ -82,7 +82,7 @@ export const WORKS: Work[] = [
   },
   {
     id: 'large-curved',
-    title: '大型施設の曲面造作と天井下地',
+    title: '大空間の曲面造作と天井下地',
     type: '軽鉄工事・大工造作工事',
     categories: ['light-gauge-steel', 'carpentry'],
     description:
@@ -190,7 +190,15 @@ export const WORKS_PREPARING_MESSAGE =
 export const WORKS_DETAIL_NOTE =
   '施工場所・施工時期・対象区分などの詳細情報は、確認でき次第、順次追記していきます。'
 
-export function filterWorks(works: Work[], category: string): Work[] {
+/**
+ * カテゴリーで絞り込む。
+ * 画面側は写真パス解決後の型（ResolvedWork）を扱うため、
+ * categories を持つものなら何でも受けられるようにしている。
+ */
+export function filterWorks<T extends Pick<Work, 'categories'>>(
+  works: T[],
+  category: string,
+): T[] {
   if (category === 'all') return works
   return works.filter((w) => w.categories.includes(category as WorkCategory))
 }

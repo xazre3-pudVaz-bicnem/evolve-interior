@@ -82,7 +82,7 @@ export default function SitemapPage() {
                         {l.label}
                         <span
                           aria-hidden="true"
-                          className="text-ink-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
+                          className="text-ink-500 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
                         >
                           →
                         </span>

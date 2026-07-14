@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button'
 import SectionHeading from '@/components/ui/SectionHeading'
 import JsonLd from '@/components/ui/JsonLd'
 import PhoneIcon from '@/components/ui/PhoneIcon'
+import LineButton from '@/components/ui/LineButton'
 
 import { REQUIREMENTS, UNDETERMINED_TEXT } from '@/lib/recruit'
 import { COMPANY } from '@/lib/constants'
@@ -93,38 +94,48 @@ export default function RequirementsPage() {
             })}
           </dl>
 
-          {/* 未確定条件についての説明 */}
-          <div className="mt-10 border-l-2 border-brand-500 bg-mist-50 p-6 sm:p-7">
-            <h2 className="text-[15px] font-bold text-ink-900">
-              条件について
+          {/*
+            給与・休日・待遇が「詳細は面談時にご案内します」のままだと、
+            単に情報が抜けているように見えて応募をためらわせる。
+            「なぜ面談で決めるのか」を説明し、その場で聞ける導線（LINE・電話）を出して、
+            未確定であること自体を接点に変える。
+          */}
+          <div className="mt-10 border-l-2 border-brand-500 bg-mist-50 p-6 sm:p-8">
+            <h2 className="text-lg font-bold text-ink-900">
+              給与・休日・待遇について
             </h2>
-            <p className="mt-3 text-[14px] leading-[1.95] text-ink-600">
-              待遇や条件の詳細については、面談の際に直接ご案内します。ご希望やご事情もその場でお聞かせください。すり合わせたうえで、お互いに納得できる形を探したいと考えています。
+            <p className="mt-4 text-[14.5px] leading-[1.95] text-ink-700">
+              条件は、面談の際に直接ご案内します。経験も、できることも、生活の事情も人それぞれです。ひとつの数字にまとめて示すより、お会いしてお話をうかがったうえで、具体的な条件をお伝えしたいと考えています。
             </p>
-            <p className="mt-3 text-[14px] leading-[1.95] text-ink-600">
-              経験者の方は、これまでの経験や技術を考慮します。詳しい条件は面談時にご案内します。
-            </p>
-          </div>
-
-          {/* 応募前の質問 */}
-          <div className="mt-8 border border-mist-200 p-6 sm:p-7">
-            <h2 className="text-[15px] font-bold text-ink-900">
-              応募前に質問だけしたい方へ
-            </h2>
-            <p className="mt-3 text-[14px] leading-[1.95] text-ink-600">
-              応募フォームの「応募理由・ご質問」欄に、聞いてみたいことをご記入ください。お電話でのご質問も承っています。
+            <p className="mt-4 text-[14.5px] leading-[1.95] text-ink-700">
+              経験者の方は、これまでの経験や技術を考慮します。未経験の方も、できることから任せていきます。
             </p>
 
-            <a
-              href={`tel:${COMPANY.phoneHref}`}
-              className="mt-5 inline-flex items-center gap-3 text-xl font-bold text-ink-900 transition-colors hover:text-brand-700"
-            >
-              <PhoneIcon className="h-5 w-5 text-brand-700" />
-              {COMPANY.phone}
-            </a>
-            <p className="mt-1.5 text-[12.5px] text-ink-500">
-              お問い合わせ受付時間 {COMPANY.hours}
-            </p>
+            <div className="mt-6 border-t border-mist-300 pt-6">
+              <p className="text-[14px] font-bold text-ink-900">
+                条件だけ先に知りたい方へ
+              </p>
+              <p className="mt-2 text-[13.5px] leading-[1.9] text-ink-600">
+                応募する前に、給与や休日について聞いていただいて構いません。LINEでもお電話でも受け付けています。名前を名乗らずに質問だけ、でも大丈夫です。
+              </p>
+
+              <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
+                <LineButton variant="filled" className="w-full sm:w-auto">
+                  LINEで条件を聞く
+                </LineButton>
+
+                <a
+                  href={`tel:${COMPANY.phoneHref}`}
+                  className="inline-flex items-center gap-3 text-xl font-bold text-ink-900 transition-colors hover:text-brand-700"
+                >
+                  <PhoneIcon className="h-5 w-5 text-brand-700" />
+                  {COMPANY.phone}
+                  <span className="text-[12px] font-normal text-ink-500">
+                    受付 {COMPANY.hours}
+                  </span>
+                </a>
+              </div>
+            </div>
           </div>
 
           <div className="mt-12 flex flex-col gap-4 sm:flex-row">

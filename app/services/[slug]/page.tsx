@@ -334,7 +334,7 @@ export default async function ServiceDetailPage({
                   <span className="text-[14px] font-medium text-ink-900">{o.name}</span>
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-ink-400 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
+                    className="shrink-0 text-ink-500 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand-700"
                   >
                     →
                   </span>

@@ -100,7 +100,9 @@ export function validateApply(v: Partial<ApplyInput>): Errors<ApplyInput> {
   else {
     const n = Number(v.age)
     if (!Number.isInteger(n) || n < 15 || n > 99) {
-      e.age = '年齢は数字で入力してください。'
+      // 「14」と入れた人に「数字で入力してください」と言っても直しようがない。
+      // 実際のルール（15〜99）をそのまま伝える。
+      e.age = '年齢は15〜99の半角数字で入力してください。'
     }
   }
 

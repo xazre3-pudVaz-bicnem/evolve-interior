@@ -5,7 +5,8 @@ import {
   COMPANY,
   INSTAGRAM_URL,
   LINE_URL,
-  GOOGLE_MAP_SEARCH_URL,
+  GOOGLE_MAP_URL,
+  GEO,
 } from './constants'
 import { SERVICES } from './services'
 import type { Faq } from './faqs'
@@ -63,6 +64,7 @@ export function pageMeta({
 
 const POSTAL_ADDRESS = {
   '@type': 'PostalAddress',
+  postalCode: COMPANY.postalCode,
   addressRegion: COMPANY.addressRegion,
   addressLocality: COMPANY.addressLocality,
   streetAddress: COMPANY.streetAddress,
@@ -88,9 +90,11 @@ export const organizationSchema = {
   email: COMPANY.email,
   telephone: COMPANY.phone,
   address: POSTAL_ADDRESS,
-  // ※ founder（創業者）は使わない。提供されているのは「代表者」であって、
-  //   その人物が創業者かどうかは確認できていない（推測で断定しない）。
-  employee: [{ '@type': 'Person', name: COMPANY.ceo, jobTitle: COMPANY.ceoRole }],
+  // ※ 代表者は構造化データに入れない。
+  //   founder（創業者）… 創業者かどうか未確認。
+  //   employee（従業員）… 代表者は役員であって従業員ではない。
+  //                       しかも1名だけ書くと「従業員数=1」を機械的に含意してしまう。
+  //   schema.org に「代表者」に相当する適切なプロパティがないため、書かないのが正しい。
   sameAs: [INSTAGRAM_URL, LINE_URL],
 }
 
@@ -114,7 +118,9 @@ export const localBusinessSchema = {
     '株式会社EVOLVEは兵庫県尼崎市を拠点とする内装工事会社です。軽鉄工事・ボード工事を中心に、化粧ケイカル、キッチンパネル、システム天井、大工造作、クロス、塗装、サイディングまで対応しています。',
   address: POSTAL_ADDRESS,
   areaServed: AREA_SERVED,
-  hasMap: GOOGLE_MAP_SEARCH_URL,
+  // Googleマップ上の「株式会社EVOLVE」のピンから取得した実測値（推測ではない）
+  geo: { '@type': 'GeoCoordinates', latitude: GEO.lat, longitude: GEO.lng },
+  hasMap: GOOGLE_MAP_URL,
   sameAs: [INSTAGRAM_URL, LINE_URL],
   knowsAbout: [
     '軽鉄工事',

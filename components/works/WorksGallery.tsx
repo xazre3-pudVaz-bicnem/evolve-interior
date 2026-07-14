@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import PhotoFrame from '@/components/ui/PhotoFrame'
-import { WORK_CATEGORIES, type Work } from '@/lib/works'
+import { WORK_CATEGORIES, filterWorks, type Work } from '@/lib/works'
 
 /** サーバー側で解決済みの写真パス（存在しない場合は null） */
 export type ResolvedWork = Omit<Work, 'photos'> & {
@@ -51,13 +51,7 @@ function WorkPhoto({
 export default function WorksGallery({ works }: { works: ResolvedWork[] }) {
   const [active, setActive] = useState<string>('all')
 
-  const filtered = useMemo(
-    () =>
-      active === 'all'
-        ? works
-        : works.filter((w) => w.categories.includes(active as never)),
-    [works, active],
-  )
+  const filtered = useMemo(() => filterWorks(works, active), [works, active])
 
   return (
     <div>
