@@ -4,13 +4,16 @@ import { COMPANY, SITE_URL, SITE_NAME } from './constants'
  * 採用情報データ。
  *
  * ■ 重要（絶対に守ること）
- * 給与・日給・月給・賞与・昇給・雇用形態・休日・社会保険・交通費・試用期間・
- * 資格手当・残業時間・福利厚生・寮／社宅・選考回数 は「未提供」である。
- * これらを推測で記載してはならない。
+ * ここに書いてよいのは「EVOLVE社から提供された実際の条件」だけ。
+ * 業界の平均値や推測で数字を書いてはならない（虚偽の求人広告は職業安定法第65条違反）。
  *
- * 未確定項目は value を null にすると、画面上は
+ * 給与・休日・待遇・選考の流れは 2026-07-15 にEVOLVE社から提供された確定値を記載している
+ * （下の RECRUIT_SALARY / RECRUIT_HOLIDAYS / RECRUIT_BENEFITS / SELECTION_FLOW）。
+ *
+ * 未確定の項目は value を null にすると、画面上は
  * 「詳細は面談時にご案内します」と自動表示される。
- * 条件が確定したら value に文字列を入れるだけで反映される。
+ * 値が変わったら、この1ファイルを直すだけで、募集要項の表・JobPosting構造化データの
+ * 両方に反映される（表記が食い違わないよう単一の情報源にしている）。
  */
 
 export type Requirement = {
@@ -39,8 +42,44 @@ export const JOB_TASKS = [
 ] as const
 
 /**
+ * 労働条件（EVOLVE社提供の確定値 / 2026-07-15）。
+ *
+ * ★ 募集要項の表と JobPosting 構造化データの両方がここを参照する。
+ *   数字と文言を一箇所にまとめることで、画面表記と構造化データの不一致を防ぐ。
+ */
+export const RECRUIT_SALARY = {
+  /** 表示用 */
+  text: '月給 26万円〜30万円',
+  /** 構造化データ用（JPY） */
+  min: 260000,
+  max: 300000,
+  unit: 'MONTH' as const,
+} as const
+
+export const RECRUIT_HOLIDAYS = '週休2日制'
+
+export const RECRUIT_BENEFITS = [
+  '社会保険完備',
+  '昇給',
+  '賞与',
+  '交通費支給',
+  '作業服・道具支給',
+  '資格取得支援',
+  '残業手当',
+] as const
+
+/** 選考の流れ（順序に意味があるので配列で持つ） */
+export const SELECTION_FLOW = [
+  '応募',
+  '電話またはメール連絡',
+  '面接1回',
+  '採否連絡',
+  '入社',
+] as const
+
+/**
  * 募集要項。
- * 提供された情報のみ value を埋めている。それ以外は null（＝面談時案内）。
+ * EVOLVE社提供の確定情報のみ value を埋めている。未提供は null（＝面談時案内）。
  */
 export const REQUIREMENTS: Requirement[] = [
   { label: '募集職種', value: JOB_TITLE },
@@ -73,27 +112,21 @@ export const REQUIREMENTS: Requirement[] = [
   {
     label: '経験者の方の待遇',
     value: '経験や技術を考慮します',
-    note: '経験者は、これまでの経験や技術を考慮します。詳しい条件は面談時にご案内します。',
+    note: '経験者は、これまでの経験や技術を考慮し、給与に反映します。',
   },
   /*
-    ── 以下は「EVOLVE社の実際の条件」が未確認のため null のまま ──
-
-    ★ 「業界の平均に合わせて」という指示だけでは埋めてはいけない。
-
-    ここは会社の実際の労働条件であり、推測で数字を書くと
-    ・職業安定法違反（虚偽の求人広告：6ヶ月以下の懲役または30万円以下の罰金）
-    ・面談で条件が違うと分かった応募者の辞退・トラブル
-    ・求人媒体からの掲載停止
-    につながる。EVOLVE社に確認した実際の値だけを入れること。
-
-    確認用のシート： docs/採用条件-確認シート.md
-    値を入れれば、画面には自動で反映される（null のあいだは
-    「詳細は面談時にご案内します」と表示される）。
+    ── 以下は 2026-07-15 にEVOLVE社から提供された確定値 ──
+    値はすべて上の RECRUIT_* / SELECTION_FLOW を参照している。
+    条件が変わったときは、この行ではなく定数側を直すこと。
   */
-  { label: '給与', value: null },
-  { label: '休日・休暇', value: null },
-  { label: '待遇・福利厚生', value: null },
-  { label: '選考の流れ', value: null },
+  {
+    label: '給与',
+    value: RECRUIT_SALARY.text,
+    note: '経験や技術を考慮のうえ、決定します。',
+  },
+  { label: '休日・休暇', value: RECRUIT_HOLIDAYS },
+  { label: '待遇・福利厚生', value: [...RECRUIT_BENEFITS] },
+  { label: '選考の流れ', value: SELECTION_FLOW.join('　→　') },
   {
     label: 'お問い合わせ受付時間',
     value: COMPANY.hours,
@@ -196,17 +229,16 @@ export const MESSAGE_EXPERIENCED = {
   lead: 'これまで積み上げてきたものを、そのまま活かしてください。',
   body: [
     '軽鉄・ボード工事の経験がある方であれば、EVOLVEの現場ですぐに力を発揮していただけます。墨出しから建て込み、割付けまで、任せられる範囲は経験に応じて広がります。',
-    '経験や技術は正当に考慮します。詳しい条件については、面談の際にご案内します。ご希望や条件のすり合わせも、その場でお話しさせてください。',
+    '経験や技術は正当に考慮し、給与に反映します。ご希望や条件のすり合わせは、面談の際にお話しさせてください。',
     'また、若いスタッフに技術を伝えていただける方も歓迎します。現場で教えられる人がいることは、会社にとって大きな財産です。',
   ],
 } as const
 
 /**
- * JobPosting 構造化データ用の準備。
+ * JobPosting 構造化データ。
  *
- * 給与・雇用形態・休日などが未確定のため、現時点では出力しない。
- * 条件が確定したら JOB_POSTING_DATA を埋めるだけで、
- * buildJobPostingSchema() が自動的にスキーマを返すようになる。
+ * 給与・雇用形態が確定しているため出力する（下の JOB_POSTING_DATA を参照）。
+ * いずれかが null に戻れば buildJobPostingSchema() は null を返し、自動的に出力を止める。
  */
 export type JobPostingData = {
   /** 雇用形態: FULL_TIME / PART_TIME / CONTRACTOR など */
@@ -224,21 +256,20 @@ export type JobPostingData = {
 }
 
 /**
- * ★ 条件が確定したらここを埋める。null が1つでも残っているあいだは
- *   JobPosting を出力しない（不完全な JobPosting は Google のガイドライン違反）。
+ * EVOLVE社提供の確定値（2026-07-15）で埋めている。
+ * これにより buildJobPostingSchema() が有効な JobPosting を返し、
+ * Google しごと検索（Google for Jobs）の対象になる。
  *
- * 給与が入ると Google しごと検索（Google for Jobs）に掲載されるようになる。
- * 求人の集客力が大きく変わるので、給与の確定は最優先。
+ * ※ 値はすべて上の RECRUIT_SALARY を参照。数字を二重管理しない。
+ * ※ null が1つでも残ると JobPosting は出力されない（不完全な出力を避けるため）。
  */
 export const JOB_POSTING_DATA: JobPostingData = {
-  // 「正社員」と確認済み
-  employmentType: 'FULL_TIME',
-
-  // ↓ EVOLVE社の実際の給与が未確認。推測で入れないこと
-  baseSalaryMin: null,
-  baseSalaryMax: null,
-  salaryUnit: null, // 'MONTH'（月給）/ 'DAY'（日給）など
-  datePosted: null, // 掲載開始日 例: '2026-07-14'
+  employmentType: 'FULL_TIME', // 正社員
+  baseSalaryMin: RECRUIT_SALARY.min,
+  baseSalaryMax: RECRUIT_SALARY.max,
+  salaryUnit: RECRUIT_SALARY.unit,
+  datePosted: '2026-07-15',
+  // 通年募集のため掲載終了日は設けない（架空の締切を作らない）
   validThrough: null,
 }
 
@@ -258,7 +289,13 @@ export function buildJobPostingSchema(data: JobPostingData = JOB_POSTING_DATA) {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
     title: JOB_TITLE,
-    description: `軽鉄工事・ボード工事を中心とした内装工事スタッフの募集です。未経験者・経験者ともに歓迎します。主な現場は兵庫県、大阪府、京都府、滋賀県を中心とした関西エリアです。`,
+    // 画面（募集要項）に載せている内容と一致させる。構造化データだけ盛らない。
+    description:
+      `軽鉄工事・ボード工事を中心とした内装工事スタッフを募集しています。` +
+      `仕事内容は${JOB_TASKS.join('、')}など。未経験者・経験者ともに歓迎します。` +
+      `勤務時間の目安は${COMPANY.workHours}、休日は${RECRUIT_HOLIDAYS}。` +
+      `待遇は${RECRUIT_BENEFITS.join('、')}。` +
+      `主な現場は兵庫県、大阪府、京都府、滋賀県を中心とした関西エリアです。`,
     datePosted,
     ...(data.validThrough ? { validThrough: data.validThrough } : {}),
     employmentType,

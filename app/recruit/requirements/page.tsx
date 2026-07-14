@@ -8,7 +8,7 @@ import JsonLd from '@/components/ui/JsonLd'
 import PhoneIcon from '@/components/ui/PhoneIcon'
 import LineButton from '@/components/ui/LineButton'
 
-import { REQUIREMENTS, UNDETERMINED_TEXT } from '@/lib/recruit'
+import { REQUIREMENTS, UNDETERMINED_TEXT, buildJobPostingSchema } from '@/lib/recruit'
 import { COMPANY } from '@/lib/constants'
 import { pageMeta, webPageSchema } from '@/lib/seo'
 
@@ -30,15 +30,22 @@ export const metadata: Metadata = pageMeta({
 })
 
 export default function RequirementsPage() {
+  // 給与などの確定値が入ったため、JobPosting を出力する（未確定なら null が返り出力されない）。
+  // この募集要項ページは給与・雇用形態・待遇が実際に表示されており、
+  // 構造化データと画面表示が一致する（Googleしごと検索の要件）。
+  const jobPosting = buildJobPostingSchema()
+
   return (
     <>
-      {/* JobPosting は条件が未確定のため出力しない（lib/recruit.ts 参照） */}
       <JsonLd
-        data={webPageSchema({
-          title: TITLE,
-          description: DESCRIPTION,
-          path: '/recruit/requirements',
-        })}
+        data={[
+          webPageSchema({
+            title: TITLE,
+            description: DESCRIPTION,
+            path: '/recruit/requirements',
+          }),
+          ...(jobPosting ? [jobPosting] : []),
+        ]}
       />
 
       <Breadcrumb
@@ -95,17 +102,15 @@ export default function RequirementsPage() {
           </dl>
 
           {/*
-            給与・休日・待遇が「詳細は面談時にご案内します」のままだと、
-            単に情報が抜けているように見えて応募をためらわせる。
-            「なぜ面談で決めるのか」を説明し、その場で聞ける導線（LINE・電話）を出して、
-            未確定であること自体を接点に変える。
+            条件は上の表に掲載済み。ここは「掲載内容についてさらに聞きたい」
+            「自分の経験だと給与はどうなるか」を、応募前に気軽に相談できる導線にする。
           */}
           <div className="mt-10 border-l-2 border-brand-500 bg-mist-50 p-6 sm:p-8">
             <h2 className="text-lg font-bold text-ink-900">
-              給与・休日・待遇について
+              応募前のご質問・ご相談
             </h2>
             <p className="mt-4 text-[14.5px] leading-[1.95] text-ink-700">
-              条件は、面談の際に直接ご案内します。経験も、できることも、生活の事情も人それぞれです。ひとつの数字にまとめて示すより、お会いしてお話をうかがったうえで、具体的な条件をお伝えしたいと考えています。
+              給与は経験や技術を考慮して決定します。「自分の経験だとどのくらいになるか」「未経験からどう覚えていくか」など、掲載している内容についてもっと詳しく知りたいことがあれば、応募前にお気軽にお尋ねください。
             </p>
             <p className="mt-4 text-[14.5px] leading-[1.95] text-ink-700">
               経験者の方は、これまでの経験や技術を考慮します。未経験の方も、できることから任せていきます。
@@ -113,15 +118,15 @@ export default function RequirementsPage() {
 
             <div className="mt-6 border-t border-mist-300 pt-6">
               <p className="text-[14px] font-bold text-ink-900">
-                条件だけ先に知りたい方へ
+                まずは質問だけでも
               </p>
               <p className="mt-2 text-[13.5px] leading-[1.9] text-ink-600">
-                応募する前に、給与や休日について聞いていただいて構いません。LINEでもお電話でも受け付けています。名前を名乗らずに質問だけ、でも大丈夫です。
+                応募する前に質問だけ、でも構いません。LINEでもお電話でも受け付けています。名前を名乗らずに聞いていただいても大丈夫です。
               </p>
 
               <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center">
                 <LineButton variant="filled" className="w-full sm:w-auto">
-                  LINEで条件を聞く
+                  LINEで質問する
                 </LineButton>
 
                 <a

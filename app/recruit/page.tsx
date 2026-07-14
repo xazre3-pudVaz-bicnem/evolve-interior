@@ -50,8 +50,9 @@ export default function RecruitPage() {
   return (
     <>
       {/*
-        JobPosting は給与・雇用形態・休日などが未確定のため、意図的に出力していない。
-        条件が確定したら lib/recruit.ts の JOB_POSTING_DATA を埋めることで有効化できる。
+        JobPosting 構造化データは募集要項ページ（/recruit/requirements）に出力している。
+        あちらは給与・雇用形態・待遇が実際に表示されており、構造化データと画面が一致するため。
+        （同じ JobPosting を複数ページに重複させない）
       */}
       <JsonLd
         data={[
