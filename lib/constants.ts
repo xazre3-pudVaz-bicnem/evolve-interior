@@ -5,7 +5,9 @@
  * ページ側でハードコードすると表記ゆれ・構造化データとの不一致が発生する。
  */
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://evolve-interior.com'
+// 本番ドメインは evolve-interior.jp。環境変数があればそれを優先する。
+// ※ ここが実ドメインと違うと、canonical・sitemap・構造化データが別ドメインを指してしまう。
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://evolve-interior.jp'
 
 export const SITE_NAME = '株式会社EVOLVE'
 export const SITE_NAME_EN = 'EVOLVE'
