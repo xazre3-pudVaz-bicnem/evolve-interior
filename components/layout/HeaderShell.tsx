@@ -5,8 +5,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import InstagramIcon from '@/components/ui/InstagramIcon'
+import LineIcon from '@/components/ui/LineIcon'
 import MobileMenu from './MobileMenu'
-import { NAV, INSTAGRAM_URL, COMPANY } from '@/lib/constants'
+import { NAV, INSTAGRAM_URL, LINE_URL, COMPANY } from '@/lib/constants'
 import { SERVICES } from '@/lib/services'
 
 type Props = {
@@ -228,7 +229,18 @@ export default function HeaderShell({ logoLight, logoDark }: Props) {
           </nav>
 
           {/* デスクトップ右側 */}
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-2.5 lg:flex">
+            <a
+              href={LINE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LINEで相談する（新しいタブ）"
+              className="flex h-11 items-center gap-2 bg-line px-4 text-[13.5px] font-bold text-ink-900 transition-colors hover:bg-line-dark"
+            >
+              <LineIcon className="h-[18px] w-[18px]" />
+              LINE
+            </a>
+
             <a
               href={INSTAGRAM_URL}
               target="_blank"

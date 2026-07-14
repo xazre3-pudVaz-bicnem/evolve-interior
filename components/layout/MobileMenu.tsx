@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { NAV, INSTAGRAM_URL, COMPANY, INSTAGRAM_HANDLE } from '@/lib/constants'
+import { NAV, INSTAGRAM_URL, LINE_URL, COMPANY, INSTAGRAM_HANDLE } from '@/lib/constants'
 import { SERVICES } from '@/lib/services'
 import InstagramIcon from '@/components/ui/InstagramIcon'
+import LineIcon from '@/components/ui/LineIcon'
 import PhoneIcon from '@/components/ui/PhoneIcon'
 
 const RECRUIT_LINKS = [
@@ -284,12 +285,24 @@ export default function MobileMenu({ tone = 'light' }: Props) {
               </a>
             </div>
 
+            {/* LINE：写真を送って相談できるので、この業種では最も使われる導線 */}
+            <a
+              href={LINE_URL}
+              onClick={close}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 flex items-center justify-center gap-2.5 bg-line py-4 text-sm font-bold text-ink-900"
+            >
+              <LineIcon className="h-5 w-5" />
+              LINEで相談する
+            </a>
+
             <a
               href={INSTAGRAM_URL}
               onClick={close}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 flex items-center justify-center gap-2.5 border border-mist-300 py-4 text-sm font-medium text-ink-900"
+              className="mt-3 flex items-center justify-center gap-2.5 border border-mist-300 py-4 text-sm font-medium text-ink-900"
             >
               <InstagramIcon className="h-5 w-5" />
               Instagram {INSTAGRAM_HANDLE}

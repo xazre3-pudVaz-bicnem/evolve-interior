@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { COMPANY } from '@/lib/constants'
 import { isMailtoTooLong } from '@/lib/formMail'
 import PhoneIcon from '@/components/ui/PhoneIcon'
+import LineButton from '@/components/ui/LineButton'
 
 type Props = {
   /** 見出し（例: メールソフトを開きました） */
@@ -74,7 +75,18 @@ export default function MailtoPanel({ title, subject, body, backHref, backLabel 
           メールソフトが開かない場合
         </h3>
         <p className="mt-3 text-[14px] leading-[1.95] text-ink-600">
-          お使いの環境によっては、メールソフトが開かないことがあります。その場合は、下のボタンで内容をコピーして、次のアドレス宛にお送りください。
+          お使いの環境によっては、メールソフトが開かないことがあります。
+          <strong className="font-bold">LINEでも同じ内容を受け付けています。</strong>
+          そのままLINEでご連絡いただくのが確実です。
+        </p>
+
+        {/* メールソフトが無い環境ではここが唯一の受け皿になるので、目立たせる */}
+        <LineButton variant="filled" className="mt-5 w-full sm:w-auto">
+          LINEで送る
+        </LineButton>
+
+        <p className="mt-6 text-[14px] leading-[1.95] text-ink-600">
+          メールで送る場合は、下のボタンで内容をコピーして、次のアドレス宛にお送りください。
         </p>
 
         <a

@@ -4,6 +4,7 @@ import {
   SITE_NAME,
   COMPANY,
   INSTAGRAM_URL,
+  LINE_URL,
   GOOGLE_MAP_SEARCH_URL,
 } from './constants'
 import { SERVICES } from './services'
@@ -90,7 +91,7 @@ export const organizationSchema = {
   // ※ founder（創業者）は使わない。提供されているのは「代表者」であって、
   //   その人物が創業者かどうかは確認できていない（推測で断定しない）。
   employee: [{ '@type': 'Person', name: COMPANY.ceo, jobTitle: COMPANY.ceoRole }],
-  sameAs: [INSTAGRAM_URL],
+  sameAs: [INSTAGRAM_URL, LINE_URL],
 }
 
 /**
@@ -114,7 +115,7 @@ export const localBusinessSchema = {
   address: POSTAL_ADDRESS,
   areaServed: AREA_SERVED,
   hasMap: GOOGLE_MAP_SEARCH_URL,
-  sameAs: [INSTAGRAM_URL],
+  sameAs: [INSTAGRAM_URL, LINE_URL],
   knowsAbout: [
     '軽鉄工事',
     '軽量鉄骨下地',

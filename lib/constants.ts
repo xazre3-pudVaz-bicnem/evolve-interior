@@ -50,6 +50,16 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/evolv_e96/?hl=ja'
 export const INSTAGRAM_HANDLE = '@evolv_e96'
 
 /**
+ * LINE（友だち追加リンク）。
+ *
+ * 内装工事の相談では「現場の写真を送りたい」というニーズが強く、
+ * メールより LINE のほうが圧倒的に使われる。
+ * 若い求職者にとってもメール・電話より心理的なハードルが低い。
+ * そのため、問い合わせ・採用の両方に導線を置いている。
+ */
+export const LINE_URL = 'https://line.me/ti/p/cd7hEovSUJ#~'
+
+/**
  * フォームの送信方式。
  *
  *  'mailto' … 訪問者のメールソフトを開き、本文が入力済みの状態で送ってもらう。

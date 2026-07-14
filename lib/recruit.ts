@@ -44,6 +44,8 @@ export const JOB_TASKS = [
  */
 export const REQUIREMENTS: Requirement[] = [
   { label: '募集職種', value: JOB_TITLE },
+  // 雇用形態は「正社員」と提供された確定情報
+  { label: '雇用形態', value: '正社員' },
   {
     label: '仕事内容',
     value: [...JOB_TASKS],
@@ -73,8 +75,21 @@ export const REQUIREMENTS: Requirement[] = [
     value: '経験や技術を考慮します',
     note: '経験者は、これまでの経験や技術を考慮します。詳しい条件は面談時にご案内します。',
   },
-  // ── 以下は未提供のため null（勝手に埋めないこと） ──
-  { label: '雇用形態', value: null },
+  /*
+    ── 以下は「EVOLVE社の実際の条件」が未確認のため null のまま ──
+
+    ★ 「業界の平均に合わせて」という指示だけでは埋めてはいけない。
+
+    ここは会社の実際の労働条件であり、推測で数字を書くと
+    ・職業安定法違反（虚偽の求人広告：6ヶ月以下の懲役または30万円以下の罰金）
+    ・面談で条件が違うと分かった応募者の辞退・トラブル
+    ・求人媒体からの掲載停止
+    につながる。EVOLVE社に確認した実際の値だけを入れること。
+
+    確認用のシート： docs/採用条件-確認シート.md
+    値を入れれば、画面には自動で反映される（null のあいだは
+    「詳細は面談時にご案内します」と表示される）。
+  */
   { label: '給与', value: null },
   { label: '休日・休暇', value: null },
   { label: '待遇・福利厚生', value: null },
@@ -208,13 +223,22 @@ export type JobPostingData = {
   validThrough: string | null
 }
 
-/** ★ 条件が確定したらここを埋める。null のあいだは JobPosting を出力しない。 */
+/**
+ * ★ 条件が確定したらここを埋める。null が1つでも残っているあいだは
+ *   JobPosting を出力しない（不完全な JobPosting は Google のガイドライン違反）。
+ *
+ * 給与が入ると Google しごと検索（Google for Jobs）に掲載されるようになる。
+ * 求人の集客力が大きく変わるので、給与の確定は最優先。
+ */
 export const JOB_POSTING_DATA: JobPostingData = {
-  employmentType: null,
+  // 「正社員」と確認済み
+  employmentType: 'FULL_TIME',
+
+  // ↓ EVOLVE社の実際の給与が未確認。推測で入れないこと
   baseSalaryMin: null,
   baseSalaryMax: null,
-  salaryUnit: null,
-  datePosted: null,
+  salaryUnit: null, // 'MONTH'（月給）/ 'DAY'（日給）など
+  datePosted: null, // 掲載開始日 例: '2026-07-14'
   validThrough: null,
 }
 

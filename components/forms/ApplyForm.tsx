@@ -11,6 +11,7 @@ import {
   Honeypot,
 } from './Fields'
 import MailtoPanel from './MailtoPanel'
+import LineButton from '@/components/ui/LineButton'
 import {
   validateApply,
   hasErrors,
@@ -23,13 +24,14 @@ import { COMPANY, FORM_MODE } from '@/lib/constants'
 
 /**
  * 希望する働き方。
- * 雇用形態が未確定のため、選択肢を固定しない。
- * 「相談したい」「詳細を聞きたい」といった柔軟な選択肢を必ず含める。
+ *
+ * 雇用形態は「正社員」で確定しているが、給与・休日・待遇はまだ未確定のため、
+ * 「相談したい」「詳細を聞きたい」といった柔軟な選択肢は必ず残しておく。
  */
 const WORK_STYLE_OPTIONS = [
+  '正社員として長く働きたい',
   'まずは詳細を聞きたい',
-  '長く続けられる働き方を希望',
-  '働き方について相談したい',
+  '働き方や条件について相談したい',
   'その他（下の欄に記入）',
 ] as const
 
@@ -206,6 +208,11 @@ export default function ApplyForm() {
               メール：{COMPANY.email}
             </a>
           </div>
+
+          {/* 送信できなかったときの受け皿としてLINEを出す */}
+          <LineButton variant="outline" className="mt-5 w-full sm:w-auto">
+            LINEで送る
+          </LineButton>
         </div>
       )}
 

@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import Logo from '@/components/ui/Logo'
 import InstagramIcon from '@/components/ui/InstagramIcon'
+import LineIcon from '@/components/ui/LineIcon'
 import PhoneIcon from '@/components/ui/PhoneIcon'
 import {
   COMPANY,
   INSTAGRAM_URL,
   INSTAGRAM_HANDLE,
+  LINE_URL,
   SITE_NAME,
 } from '@/lib/constants'
 import { SERVICES } from '@/lib/services'
@@ -58,15 +60,27 @@ export default function Footer() {
               </a>
             </address>
 
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2.5 border border-mist-300 px-5 py-3 text-[13px] font-medium text-ink-900 transition-colors hover:border-ink-900"
-            >
-              <InstagramIcon className="h-[18px] w-[18px]" />
-              Instagram {INSTAGRAM_HANDLE}
-            </a>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href={LINE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 bg-line px-5 py-3 text-[13px] font-bold text-ink-900 transition-colors hover:bg-line-dark"
+              >
+                <LineIcon className="h-[18px] w-[18px]" />
+                LINEで相談する
+              </a>
+
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 border border-mist-300 px-5 py-3 text-[13px] font-medium text-ink-900 transition-colors hover:border-ink-900"
+              >
+                <InstagramIcon className="h-[18px] w-[18px]" />
+                Instagram {INSTAGRAM_HANDLE}
+              </a>
+            </div>
           </div>
 
           {/* リンク */}

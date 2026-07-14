@@ -10,6 +10,7 @@ import FaqList from '@/components/ui/FaqList'
 import InstagramBlock from '@/components/ui/InstagramBlock'
 import JsonLd from '@/components/ui/JsonLd'
 import PhoneIcon from '@/components/ui/PhoneIcon'
+import LineButton from '@/components/ui/LineButton'
 
 import {
   RECRUIT_APPEALS,
@@ -356,6 +357,11 @@ export default function RecruitPage() {
             <Button href="/recruit/requirements" variant="outlineLight">
               募集要項を見る
             </Button>
+          </div>
+
+          {/* LINE：メール・電話よりハードルが低く、若手の応募に効く */}
+          <div className="mt-8 flex justify-center">
+            <LineButton variant="filled">LINEで質問・応募する</LineButton>
           </div>
 
           <div className="mt-12 border-t border-white/10 pt-10">

@@ -5,6 +5,8 @@ import PageHero from '@/components/ui/PageHero'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import JsonLd from '@/components/ui/JsonLd'
 import PhoneIcon from '@/components/ui/PhoneIcon'
+import LineIcon from '@/components/ui/LineIcon'
+import LineButton from '@/components/ui/LineButton'
 import ApplyForm from '@/components/forms/ApplyForm'
 
 import { COMPANY } from '@/lib/constants'
@@ -46,6 +48,20 @@ export default function ApplyPage() {
             </div>
 
             <aside className="lg:sticky lg:top-28 lg:self-start">
+              {/* LINE：メール・電話より心理的ハードルが低く、若手の応募に効く */}
+              <div className="mb-6 border-2 border-line bg-white p-6 sm:p-7">
+                <h2 className="flex items-center gap-2.5 text-[15px] font-bold text-ink-900">
+                  <LineIcon className="h-5 w-5 text-line" />
+                  LINEで応募・質問する
+                </h2>
+                <p className="mt-3 text-[13.5px] leading-[1.9] text-ink-600">
+                  「話を聞いてみたい」だけでも構いません。仕事の内容や働き方について、気軽に質問していただけます。
+                </p>
+                <LineButton variant="filled" className="mt-5 w-full">
+                  LINEで応募する
+                </LineButton>
+              </div>
+
               <div className="border border-mist-200 bg-mist-50 p-6 sm:p-7">
                 <h2 className="text-[11px] font-medium tracking-[0.2em] text-ink-500">
                   お電話でのご応募・ご質問

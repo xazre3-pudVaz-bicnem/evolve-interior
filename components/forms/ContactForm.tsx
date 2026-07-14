@@ -12,6 +12,7 @@ import {
   Honeypot,
 } from './Fields'
 import MailtoPanel from './MailtoPanel'
+import LineButton from '@/components/ui/LineButton'
 import {
   validateContact,
   hasErrors,
@@ -218,6 +219,11 @@ export default function ContactForm() {
               メール：{COMPANY.email}
             </a>
           </div>
+
+          {/* 送信できなかったときの受け皿としてLINEを出す */}
+          <LineButton variant="outline" className="mt-5 w-full sm:w-auto">
+            LINEで送る
+          </LineButton>
         </div>
       )}
 

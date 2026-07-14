@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { COMPANY } from '@/lib/constants'
 import Button from './Button'
+import LineButton from './LineButton'
 import PhoneIcon from './PhoneIcon'
 
 type Props = {
@@ -60,36 +61,49 @@ export default function ContactCta({ className = '' }: Props) {
           </div>
         </div>
 
-        {/* 電話・メール */}
-        <div className="mt-10 flex flex-col gap-6 border-t border-white/10 pt-10 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-[11px] tracking-[0.2em] text-mist-400">お電話でのお問い合わせ</p>
-            <a
-              href={`tel:${COMPANY.phoneHref}`}
-              className="mt-2 inline-flex items-center gap-3 text-2xl font-bold text-white transition-colors hover:text-brand-300 sm:text-3xl"
-            >
-              <PhoneIcon className="h-6 w-6 text-brand-400" />
-              {COMPANY.phone}
-            </a>
-            <p className="mt-2 text-xs text-mist-400">
-              受付時間 {COMPANY.hours}
-            </p>
+        {/* LINE・電話・メール */}
+        <div className="mt-10 border-t border-white/10 pt-10">
+          {/* LINEは写真をそのまま送れるので、この業種では最も使われる導線 */}
+          <div className="flex flex-col gap-4 border border-white/15 bg-white/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+            <div>
+              <p className="text-[15px] font-bold text-white">LINEでも受け付けています</p>
+              <p className="mt-2 text-sm leading-[1.9] text-mist-300">
+                現場の写真をそのまま送っていただけます。工事の名前が分からなくても、写真があればご案内できる場合があります。
+              </p>
+            </div>
+            <LineButton variant="filled" className="shrink-0">
+              LINEで相談する
+            </LineButton>
           </div>
 
-          <div className="sm:text-right">
-            <p className="text-[11px] tracking-[0.2em] text-mist-400">メール</p>
-            <a
-              href={`mailto:${COMPANY.email}`}
-              className="mt-2 block break-all text-[15px] text-white underline decoration-white/30 underline-offset-4 transition-colors hover:text-brand-300"
-            >
-              {COMPANY.email}
-            </a>
-            <Link
-              href="/privacy"
-              className="mt-3 inline-block text-xs text-mist-400 underline underline-offset-4 transition-colors hover:text-white"
-            >
-              個人情報保護方針
-            </Link>
+          <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-[11px] tracking-[0.2em] text-mist-400">お電話でのお問い合わせ</p>
+              <a
+                href={`tel:${COMPANY.phoneHref}`}
+                className="mt-2 inline-flex items-center gap-3 text-2xl font-bold text-white transition-colors hover:text-brand-300 sm:text-3xl"
+              >
+                <PhoneIcon className="h-6 w-6 text-brand-400" />
+                {COMPANY.phone}
+              </a>
+              <p className="mt-2 text-xs text-mist-400">受付時間 {COMPANY.hours}</p>
+            </div>
+
+            <div className="sm:text-right">
+              <p className="text-[11px] tracking-[0.2em] text-mist-400">メール</p>
+              <a
+                href={`mailto:${COMPANY.email}`}
+                className="mt-2 block break-all text-[15px] text-white underline decoration-white/30 underline-offset-4 transition-colors hover:text-brand-300"
+              >
+                {COMPANY.email}
+              </a>
+              <Link
+                href="/privacy"
+                className="mt-3 inline-block text-xs text-mist-400 underline underline-offset-4 transition-colors hover:text-white"
+              >
+                個人情報保護方針
+              </Link>
+            </div>
           </div>
         </div>
       </div>
